@@ -3,41 +3,43 @@ from tkinter import *
 
 # inicia a figura / quando o mouse é pressionado
 def iniciar_figura(event):
-    global new_fig
-    
-    if tipo_fig_var.get() == "Linha":
-        new_fig  = ("Linha", (event.x, event.y, event.x, event.y))
-    elif tipo_fig_var.get() == "Circulo":
-        new_fig  = ("Circulo", (event.x, event.y))
-        
-    elif tipo_fig_var.get() == "Quadrado":
-        new_fig  = ("Quadrado", (event.x, event.y))
-    else:
-        new_fig = ("Rabisco", [(event.x, event.y)])
-
-# quando continua pressionando o mouse 
-def update_fig(event):
-    global new_fig, ini_x, ini_y, fim_x, fim_y, raio
+    global new_fig, ini_x, ini_y
     
     ini_x = event.x
     ini_y = event.y 
+    
+    if tipo_fig_var.get() == "Linha":
+        new_fig  = ("Linha", (event.x, event.y, event.x, event.y))
+    
+    elif tipo_fig_var.get() == "Circulo":
+        new_fig  = ("Circulo", (event.x, event.y, 0))
+        
+    elif tipo_fig_var.get() == "Quadrado":
+        new_fig  = ("Quadrado", (event.x, event.y, event.x, event.y))
+    
+    else:
+        new_fig = ("Rabisco", [(event.x, event.y)])
+
+# quando continua pressionando o mouse
+def update_fig(event):
+    global new_fig, fim_x, fim_y, raio
+    
     fim_x = event.x
     fim_y = event.y
     
-    if new_fig[0] == "Rabisco":
+    if new_fig[0] == "Rabisco": # desenha em "mão livre"
         new_fig[1].append((event.x, event.y))
         
-    elif new_fig[0] == "Circulo": #cria circulo
-        new_fig[1].append((event.x, event.y))
+    elif new_fig[0] == "Circulo": # cria circulo
         raio = ( (ini_x - fim_x)**2 + (ini_y - fim_y)**2 ) ** 0.5
-        canvas.create_oval(ini_x-raio, ini_y-raio, ini_x+raio, ini_y+raio)
-    
-    elif new_fig[0] == "Quadrado": #cria quadrado
-        new_fig[1].append((event.x, event.y))
-        canvas.create_rectangle(ini_x, ini_y, ini_x,ini_y)
+        new_fig = ('Circulo', (event.x, event.y, raio))
         
+    elif new_fig[0] == "Quadrado": # cria quadrado
+        new_fig = ('Quadrado', (new_fig[1][0],
+                                new_fig[1][1],
+                                event.x, event.y))
         
-    else: # figura_nova[0] == "Linha"
+    elif new_fig[0] == "Linha": # cria linha
         new_fig = ("Linha", (new_fig[1][0],
                              new_fig[1][1], 
                              event.x, event.y))
@@ -57,7 +59,7 @@ def desenhar_fig():
         if fig == "Linha":
             canvas.create_line(values[0], values[1], values[2], values[3])
         
-        elif fig == 'Lirculo':
+        elif fig == 'Circulo':
             x, y, r = values
             canvas.create_oval(x-r, y-r, x+r, y+r)
         
@@ -72,27 +74,31 @@ def desenhar_new_fig():
     if fig == "Linha":
         canvas.create_line(values[0], values[1], values[2], values[3], dash=(4, 2))
         
-    if fig == 'Circulo':
+    elif fig == 'Circulo':
             x, y, r= values
-            canvas.create_oval(x-r, y-r, x+r, y+r, dash=(4,2))
+            canvas.create_oval(x-r, y-r, x+r, y+r)
     
-    if fig == 'Quadrado':
-            canvas.create_rectangle(values[0], values[1], values[2], values[3], dash=(4,2))
+    elif fig == 'Quadrado':
+            canvas.create_rectangle(values[0], values[1], values[2], values[3])
             
     else : # fig == "Rabisco"
         canvas.create_line(values, dash=(4, 2))
 
 def incompleta(figura):
     fig, values = figura
-    if fig == "Linha":
+    if fig == "Linha" or fig == 'Quadrado':
         return (values[0], values[1]) == (values[2], values[3])
+    
+    elif fig == 'Circulo':
+        return values[2] == 0 # se o raio for 0, está incompleta
+    
     else : # fig == "rabisco"
         return len(values) <= 1
 
  #----------main------------#
 figuras = []       # Todas as figuras desenhadas
 new_fig = None # Figura que está sendo desenhada, mas ainda não foi incluída em figuras
-raio= None
+raio = None
 
 
 root = Tk()
