@@ -1,46 +1,46 @@
-
-import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 
-# iniciar a a figura
+# inicia a figura / quando o mouse é pressionado
 def iniciar_figura(event):
     global new_fig
+    
     if tipo_fig_var.get() == "Linha":
         new_fig  = ("Linha", (event.x, event.y, event.x, event.y))
-    if tipo_fig_var.get() == "Circulo":
+    elif tipo_fig_var.get() == "Circulo":
         new_fig  = ("Circulo", (event.x, event.y))
         
-    if tipo_fig_var.get() == "Quadrado":
+    elif tipo_fig_var.get() == "Quadrado":
         new_fig  = ("Quadrado", (event.x, event.y))
     else:
         new_fig = ("Rabisco", [(event.x, event.y)])
 
 # quando continua pressionando o mouse 
 def update_fig(event):
-    global new_fig, fim_x, fim_y, ini_x, ini_y, raio
+    global new_fig, ini_x, ini_y, fim_x, fim_y, raio
     
+    ini_x = event.x
+    ini_y = event.y 
     fim_x = event.x
     fim_y = event.y
-    ini_x = event.x
-    ini_y = event.y
     
     if new_fig[0] == "Rabisco":
         new_fig[1].append((event.x, event.y))
         
-    if new_fig[0] == "Circulo": #cria circulo
+    elif new_fig[0] == "Circulo": #cria circulo
         new_fig[1].append((event.x, event.y))
         raio = ( (ini_x - fim_x)**2 + (ini_y - fim_y)**2 ) ** 0.5
         canvas.create_oval(ini_x-raio, ini_y-raio, ini_x+raio, ini_y+raio)
     
-    if new_fig[0] == "Quadrado": #cria quadrado
+    elif new_fig[0] == "Quadrado": #cria quadrado
         new_fig[1].append((event.x, event.y))
         canvas.create_rectangle(ini_x, ini_y, ini_x,ini_y)
         
         
     else: # figura_nova[0] == "Linha"
         new_fig = ("Linha", (new_fig[1][0],
-                             new_fig[1][1], event.x, event.y))
+                             new_fig[1][1], 
+                             event.x, event.y))
     desenhar_fig()
     desenhar_new_fig()
  
@@ -54,38 +54,37 @@ def incluir_figura_nova(event):
 def desenhar_fig():
     canvas.delete("all")
     for fig, values in figuras:
-        if fig == "linha":
+        if fig == "Linha":
             canvas.create_line(values[0], values[1], values[2], values[3])
         
-        if fig== 'circulo':
-            x, y, r= values
+        elif fig == 'Lirculo':
+            x, y, r = values
             canvas.create_oval(x-r, y-r, x+r, y+r)
         
-        if fig== 'Quadrado':
+        elif fig == 'Quadrado':
             canvas.create_rectangle(values[0], values[1], values[2], values[3])
         
-        else : # fig == "rabisco"
+        else : # fig == "Rabisco"
             canvas.create_line(values)
 
 def desenhar_new_fig():
     fig, values = new_fig
-    if fig == "linha":
+    if fig == "Linha":
         canvas.create_line(values[0], values[1], values[2], values[3], dash=(4, 2))
         
-    if fig== 'circulo':
+    if fig == 'Circulo':
             x, y, r= values
             canvas.create_oval(x-r, y-r, x+r, y+r, dash=(4,2))
     
-    if fig== 'Quadrado':
+    if fig == 'Quadrado':
             canvas.create_rectangle(values[0], values[1], values[2], values[3], dash=(4,2))
-        
             
-    else : # fig == "rabisco"
+    else : # fig == "Rabisco"
         canvas.create_line(values, dash=(4, 2))
 
 def incompleta(figura):
     fig, values = figura
-    if fig == "linha":
+    if fig == "Linha":
         return (values[0], values[1]) == (values[2], values[3])
     else : # fig == "rabisco"
         return len(values) <= 1
@@ -98,6 +97,10 @@ raio= None
 
 root = Tk()
 frame = Frame(root)
+
+# Personalização da janela
+root.title("Paint CAR") # Título/Nome do app/janela
+#root.iconbitmap('icon') # Ícone do app/janela (colocar)
 
 # Widgets arranjados com Layout grid dentro de frame
 paddings = {'padx': 5, 'pady': 5} 
@@ -113,7 +116,7 @@ option_menu = ttk.OptionMenu(frame, tipo_fig_var,
 option_menu.grid(column=1, row=0, sticky=W, **paddings)
 
 # Área de desenho
-canvas = Canvas(frame, bg='white', width=600, height=600)
+canvas = Canvas(frame, bg='white', width=1200, height=800)
 canvas.grid(column=0, row=1, columnspan=2, sticky=W, **paddings)
 
 frame.pack()
