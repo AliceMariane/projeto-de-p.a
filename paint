@@ -1,5 +1,11 @@
 from tkinter import ttk
 from tkinter import *
+import tkinter as tk
+import sys
+import os
+import tkinter.colorchooser as colorchooser
+
+#por enquanto, toda vez que aparece quadrado ate no programa eh um retangulo
 
 # inicia a figura / quando o mouse é pressionado
 def iniciar_figura(event):
@@ -38,9 +44,9 @@ def update_fig(event):
         new_fig = ('Circulo', (event.x, event.y, raio))
 
     elif new_fig[0] == "Elipse": # cria elipse
-        raio1 = ini_x- ( (ini_x - fim_x)*2)
-        raio2 = ini_y- ( (ini_y - fim_y)*2)
-        new_fig = ('Elipse', (event.x, event.y, raio1, raio2) )
+        new_fig = ('Elipse', (new_fig[1][0],
+                                new_fig[1][1],
+                                event.x, event.y))
         
     elif new_fig[0] == "Quadrado": # cria quadrado
         new_fig = ('Quadrado', (new_fig[1][0],
@@ -69,14 +75,13 @@ def desenhar_fig():
         
         elif fig == 'Circulo':
             x, y, r = values
-            canvas.create_oval(x-r, y-r, x+r, y+r)
+            canvas.create_oval(x-r, y-r, x+r, y+r, outline=cor, fill=cor)
 
         elif fig == 'Elipse':
-            x, y, rx, ry = values
-            canvas.create_oval(x-rx, y-ry, x+rx, y+ry)
-        
+            canvas.create_oval(values[0], values[1], values[2], values[3],outline=cor, fill=cor)
+            
         elif fig == 'Quadrado':
-            canvas.create_rectangle(values[0], values[1], values[2], values[3])
+            canvas.create_rectangle(values[0], values[1], values[2], values[3],  outline=cor, fill=cor)
         
         else : # fig == "Rabisco"
             canvas.create_line(values)
@@ -88,42 +93,56 @@ def desenhar_new_fig():
         
     elif fig == 'Circulo':
             x, y, r= values
-            canvas.create_oval(x-r, y-r, x+r, y+r)
+            canvas.create_oval(x-r, y-r, x+r, y+r,  outline=cor, fill=cor)
 
     elif fig == 'Elipse':
-            x, y, rx, ry = values
-            canvas.create_oval(x-rx, y-ry, x+rx, y+ry)
+            canvas.create_oval(values[0], values[1], values[2], values[3],outline=cor, fill=cor,dash=(4, 2))
+            
     
     elif fig == 'Quadrado':
-            canvas.create_rectangle(values[0], values[1], values[2], values[3])
+            canvas.create_rectangle(values[0], values[1], values[2], values[3], outline=cor, fill=cor, dash=(4, 2))
             
     else : # fig == "Rabisco"
         canvas.create_line(values, dash=(4, 2))
 
 def incompleta(figura):
     fig, values = figura
-    if fig == "Linha" or fig == 'Quadrado':
+    if fig == "Linha" or fig == 'Quadrado' or fig == 'Elipse':
         return (values[0], values[1]) == (values[2], values[3])
     
-    elif fig == 'Circulo' or fig == 'Elipse':
+    elif fig == 'Circulo':
         return values[2] == 0 # se o raio for 0, está incompleta
     
     else : # fig == "rabisco"
         return len(values) <= 1
 
-
-def cor_do_pincel(cores):#muda cor da borda das figuras
-    for fig,values in figuras:
-        canvas.itemconfig(fig, outline= cores)
-        
-def cor_do_preenchimento(cores): # muda cor do preenchimento das figuras
-    for fig, values in figuras:
-        canvas.itemconfig(fig, fill= cores)
         
 # para alterar tamanho da linha ------> canvas.itemconfig(fig, width= tamanho), sendo esse tamanho int
 
+
+# paleta de cores (parte de caique)
+def selct_cor():
+    cor_escolhida = colorchooser.askcolor(title="Escolha uma cor")[1]
+
+    if cor_escolhida:
+        cor_padrao(cor_escolhida)
+        print(f'Cor escolhida: {cor_escolhida}')
+
+
+def cor_padrao(cor_selecionada):
+    global cor #pra poder alterar a cor atual de fato
+    cor=cor_selecionada
+    print(f'Cor padrão:{cor_selecionada}')
+
+
+def limpar_tela():
+    print("Tela limpa")
+
  #----------main------------#
 figuras = []       # Todas as figuras desenhadas
+cor='black' # as cores é o que tava no arquivo de caique
+cores = ["red", "green", "blue", "yellow", "orange",
+          "brown", "pink", "black", "white"]
 new_fig = None # Figura que está sendo desenhada, mas ainda não foi incluída em figuras
 raio = None
 
@@ -148,10 +167,38 @@ option_menu = ttk.OptionMenu(frame, tipo_fig_var,
                              'Linha', 'Linha', 'Rabisco', 'Circulo', 'Quadrado', 'Elipse')
 option_menu.grid(column=1, row=0, sticky=W, **paddings)
 
+
+frame_menu = tk.Frame(root, bg="gray", pady=25)
+frame_menu.pack(fill=tk.X)
+
+# subframe cores
+frame_cores = tk.Frame(frame_menu, bg="lightgray")
+frame_cores.pack(side=tk.LEFT, padx=10)
+
+for i, cor in enumerate(cores):
+    btao = tk.Button(
+        frame_cores,
+        bg=cor,
+        width=2,
+        height=1,
+        command=lambda c=cor: cor_padrao(c)
+    )
+    btao.grid(row=0, column=i, padx=2)
+
+botao_paleta = tk.Button(frame_menu, text="Paleta de cores", command=selct_cor)
+botao_paleta.pack(side=tk.LEFT, padx=10)
+# botao escolher cor
+
+# botao limpar tela
+botao_limpar = tk.Button(frame_menu, text="Limpar tela", command=limpar_tela)
+botao_limpar.pack(side=tk.LEFT, padx=10)
+
+
 # Área de desenho
 canvas = Canvas(frame, bg='white', width=1200, height=800)
 canvas.grid(column=0, row=1, columnspan=2, sticky=W, **paddings)
 
+#quase tudo de cor que tá aqui é das implementações de caique no momento, já sao 8 e meia da noite
 frame.pack()
 ini_x = None
 ini_y = None
