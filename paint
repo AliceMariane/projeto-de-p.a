@@ -1,9 +1,8 @@
 from tkinter import ttk
 from tkinter import *
 import tkinter as tk
-import sys
-import os
-import tkinter.colorchooser as colorchooser
+import os # querem colocar imagem de icone no paint, por isso importar isso daqui
+import tkinter.colorchooser as colorchooser # cores...
 
 #por enquanto, toda vez que aparece quadrado ate no programa eh um retangulo
 
