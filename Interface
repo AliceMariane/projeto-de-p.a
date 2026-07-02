@@ -1,114 +1,89 @@
+from tkinter import * 
+from tkinter import colorchooser
 import sys
 import os
-import tkinter as tk
-import tkinter.colorchooser as colorchooser
 
-# janela principal 
-janela = tk.Tk()
+# Janela principal
+class Janela:
 
-# pasta do script, caminho relativo para o icone
-pasta_projeto: str = os.path.dirname(os.path.abspath(__file__))
+    def __init__(self, root):
 
-try:
-    if sys.platform.startswith('win'):
-        caminho = os.path.join(pasta_projeto, "icon_pa.ico")
-        janela.iconbitmap(caminho)
-    else:
-        caminho = os.path.join(pasta_projeto, "icon_pa.png")
-        icone = tk.PhotoImage(file=caminho)
-        janela.iconphoto(True, icone)
-except Exception as e:
-    print(f"Icone não encontrado: {e}")
+        self.root = root
+        self.root.title('Paint CAR')
+        self.root.geometry('720x1080')
 
-janela.title("Paint CAR")
-janela.geometry("720x1080")
+        self.cor_atual = 'black'
+        self.icone()
+        self.menu()
 
-# frame dos menus
-frame_menu = tk.Frame(janela, bg="gray", pady=20)
-frame_menu.pack(fill=tk.X)
+    def icone (self):
+        icon = os.path.dirname(os.path.abspath(__file__))
+        # aplicando o icone em quaisque OS
+        try:
+            if sys.platform.startswith('win'):
+                caminho = os.path.join(icone,'icone_pa.ico')
+                self.root.iconbitmap(caminho)
+            else:
+                caminho = os.path.join(icone, 'icone_png')
+                img = PhotoImage(file=caminho)
+                self.root.iconphoto(True, img)
 
+        except Exception as e:
+            print(f'Icone invalido: {e}')
 
-# paleta de cores
-def selct_cor():
-    cor_escolhida = colorchooser.askcolor(title="Escolha uma cor")[1]
-    if cor_escolhida:
-        print(f'Cor escolhida: {cor_escolhida}')
-
-
-def cor_padrao(cor_selecionada):
-    print(f'Cor padrão: {cor_selecionada}')
-
-
-def limpar_tela():
-    print("Tela limpa")
-
-
-# subframe cores
-frame_cores = tk.Frame(frame_menu, bg="lightgray")
-frame_cores.pack(side=tk.LEFT, padx=10)
-
-cores = ["red", "green", "blue", "yellow", "orange",
-         "brown", "pink", "black", "white"]
-
-for i, cor in enumerate(cores):
-    btao = tk.Button(
-        frame_cores,
-        bg=cor,
-        width=2,
-        height=1,
-        command=lambda c=cor: cor_padrao(c)
-    )
-    btao.grid(row=0, column=i, padx=2)
-
-botao_paleta = tk.Button(frame_menu, text="Paleta de cores", command=selct_cor)
-botao_paleta.pack(side=tk.LEFT, padx=10)
-
-# botao limpar tela
-botao_limpar = tk.Button(frame_menu, text="Limpar tela", command=limpar_tela)
-botao_limpar.pack(side=tk.LEFT, padx=10)
-
-
-def cor_traco():
-    btao_cor_traco = tk.Button(frame_menu, bg='lightgray') #command traço da figura
-    btao_cor_traco.pack(side=tk.LEFT, padx=10)
-
-# Funçao escolher formas
-def f_forma(forma_escolhida):
-    forma = forma_escolhida.lower()
-
-    if forma == 'quadrado':
-        print("Quadrado selecionado")
-    elif forma == 'retangulo':
-        print("Retangulo selecionado")
-    elif forma == 'circulo':
-        print("Circulo selecionado")
-    elif forma == 'oval':
-        print("Oval selecionado")
-    elif forma == 'rabisco':
-        print("Rabisco selecionado")
-    elif forma == 'reta':
-        print("Reta selecionada")
-
-formas = ['Retangulo', 'Quadrado', 'Circulo',
-          'Oval', 'Rabisco', 'Reta'] 
-
-# subframe de formas e pincel
-frame_formas = tk.Frame(frame_menu, bg='lightgray')
-frame_formas.pack(side=tk.LEFT, padx=5, pady=5)
-
-# criação do botao das formas
-for i, forma in enumerate(formas):
-    btao_forma = tk.Button(
-        frame_formas, 
-        text=forma,  
-        width=10,  
-        height=1,  
-        command=lambda f=forma: f_forma(f)
-    )
+        
     
-    linha = i // 3  
-    
-    coluna = i % 3  
+    def menu (self):
 
-    btao_forma.grid(row=linha, column=coluna, padx=2, pady=2)
-janela.mainloop()
+        self.frame_menu = Frame(self.root, bg='gray', pady=20)
+        self.frame_menu.pack(fill=X)
+
+        # outros frames incluidos no menu principal
+
+        f_cores = Frame(self.frame_menu, bg='lightgray')
+        f_cores.pack(side=LEFT, padx=10)
+        
+
+        self.btao_c() # paleta de cores
+        btao_paleta = Button(self.f_cores, text='Paleta', command=self.palet_c)
+        btao_paleta.grind(row=0,column=10, padx=5)
+       #'''' self.btao_forma() # Formas geometricas
+        #self.btao_ferramentas() # Ferramentas(pinceis, borracha)'''
+
+    def define_cores(self, nova_cor):
+
+        self.cor_atual = nova_cor
+        print(f'Cor atual: {self.cor_atual}')
+
+
+
+    def btao_c(self):
+
+        lst_cores = ['red', 'green', 'blue','yellow', 'orange',
+                'brown', 'pink', 'black', 'white']
+
+        for i, cor_ in  enumerate(lst_cores):
+            btao = Button(
+                self.f_cores,
+                bg=cor_,
+                width=2,
+                height=1,
+                command=lambda c=cor_:cor_padrao(c)
+                
+            )
+            btao.grid(row=0, column=i, padx=2)
+        
+        def palet_c(self):
+            
+            cor =color.askcolor(title='Escolha uma cor')[1]
+            
+            if cor:
+                cor_padrao=(cor)
+                print(f'Cor escolhida: {cor}')
+if __name__ == '__main__':
+    root = Tk()
+    app = Janela(root)
+    root.mainloop()
+
+        
+
