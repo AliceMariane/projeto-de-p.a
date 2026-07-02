@@ -30,17 +30,17 @@ class Reta(Figura):
     self.fim_y = y
 
   def atualizar(self, x, y):
-    """
+    '''
     Atualiza o ultimo ponto (x, y) da reta.
-    """
+    '''
     
     self.fim_x = x
     self.fim_y = y
 
   def desenhar(self, canvas):
-    """
+    '''
     Desenha de forma definitiva a reta na tela.
-    """
+    '''
     
     canvas.create_line(self.ini_x, 
                         self.ini_y, 
@@ -50,10 +50,10 @@ class Reta(Figura):
                         fill= self.cor_preenchimento)
 
   def desenhar_preview(self, canvas):
-    """
+    '''
     Mostra o tracejado da reta em tempo
     real enquanto o botão do mouse está sendo pressionado.
-    """
+    '''
     
     canvas.create_line(self.ini_x, 
                       self.ini_y, 
