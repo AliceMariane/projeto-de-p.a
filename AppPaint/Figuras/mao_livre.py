@@ -12,6 +12,7 @@ class MaoLivre(Figura):
   Esses pontos são ligados
   formando uma única linha.
   '''
+  
   def __init__(self, x, y, cor_borda= 'black'): # maolivre == rabisco
     super().__init__(cor_borda)
     
@@ -27,25 +28,25 @@ class MaoLivre(Figura):
     ]
 
   def atualizar(self, x, y):
-    """
+    '''
     Atualiza o ultimo ponto (x, y) do rabisco
-    """
+    '''
     
     self.pontos.append((x, y))
 
   def desenhar(self, canvas):
-    """
+    '''
     Desenha de forma definitiva o rabisco na tela
-    """
+    '''
     
     canvas.create_line((self.pontos), 
                         outline= self.cor_borda)
 
   def desenhar_preview(self, canvas):
-    """
+    '''
     Mostra o tracejado do rabisco em tempo
     real enquanto o botão do mouse está sendo pressionado
-    """
+    '''
     
     canvas.create_line((self.pontos), 
                         outline= self.cor_borda,
