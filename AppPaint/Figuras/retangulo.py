@@ -31,17 +31,17 @@ class Retangulo(Figura):
     self.fim_y = y
 
   def atualizar(self, x, y):
-    """
+    '''
     Atualiza o ultimo vértice (x, y) do retângulo
-    """
+    '''
     
     self.fim_x = x
     self.fim_y = y
 
   def desenhar(self, canvas):
-    """
+    '''
     Desenha de forma definitiva o retângulo na tela
-    """
+    '''
     
     canvas.create_rectangle(self.ini_x, 
                             self.ini_y, 
@@ -51,10 +51,10 @@ class Retangulo(Figura):
                             fill= self.cor_preenchimento)
 
   def desenhar_preview(self, canvas):
-    """
+    '''
     Mostra o tracejado do retângulo em tempo
     real enquanto o botão do mouse está sendo pressionado
-    """
+    '''
     
     canvas.create_rectangle(self.ini_x, 
                             self.ini_y, 
