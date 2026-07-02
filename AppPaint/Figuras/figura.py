@@ -3,18 +3,18 @@ class Figura:
     Classe base para todas as figuras.
 
     Toda figura tem:
-      > cor da borda
-      > cor do preenchimento
+        > cor da borda
+        > cor do preenchimento
         
     Toda figura pode:
-      > ser desenhada
-      > ser atualizada enquanto o mouse está pressionado
-      > verificar se está incompleta
+        > ser desenhada
+        > ser atualizada enquanto o mouse está pressionado
+        > verificar se está incompleta
 
     Cada subclasse irá implementar sua própria forma de desenhar e atualizar.
     """
 
-    def __init__(self, cor_borda="black", cor_preenchimento=""):
+    def __init__(self, cor_borda= "black", cor_preenchimento= ""):
         """
         Atributos de classe:
 
