@@ -9,7 +9,7 @@ class GerenteDeDesenhos:
         self.figuras= []#armazenar figuras
         self.canvas=canvas #os desenhos serao feitos aqui
         self.desenho_atual= None #default
-        self.desenho= 'mao_livre'#padrao
+        self.desenho= 'Reta'#padrao
         self.gerente_de_cores= gerente_de_cores
         
     def iniciar_figura(self, event): #usa a fabrica pra montar o desenhos com os ingredientes 
