@@ -1,3 +1,4 @@
+#importando as classes de figuras
 from Figuras.reta import Reta
 from Figuras.circulo import Circulo
 from Figuras.elipse import Elipse
@@ -15,7 +16,8 @@ class FabricaDeFiguras:
     def criar (desenho,x, y, cor_borda, cor_preenchimento):
 
         # estrutura----> if desenho == 'n', return a classe N com o que 'n' usa
-        if desenho=='Reta':
+        
+        if desenho=='Reta':#se a figura for reta
             return Reta(x,y,cor_borda)
         
         elif desenho=='Retangulo':
@@ -34,5 +36,4 @@ class FabricaDeFiguras:
             return MaoLivre(x,y,cor_borda)
         
         
-#aparentemente a classe Figura eh um asset para estruturar classes de figuras futuras
-#poxa essa classe aqui parece a mais facil :/
+#aparentemente a classe Figura eh um asset para estruturar classes de figuras futuras, nao faz sentido importar ela
