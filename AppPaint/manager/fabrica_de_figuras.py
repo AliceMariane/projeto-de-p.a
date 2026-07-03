@@ -36,4 +36,4 @@ class FabricaDeFiguras:
             return MaoLivre(x,y,cor_borda)
         
         
-#aparentemente a classe Figura eh um asset para estruturar classes de figuras futuras, nao faz sentido importar ela
+#aparentemente a classe Figura eh uma superclasse a fabrica so cria as subclasses (ex: reta, quadrado, circulo), logo nao faz sentido importar a mesma 
