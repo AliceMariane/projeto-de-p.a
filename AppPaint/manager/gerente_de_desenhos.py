@@ -1,11 +1,9 @@
 #a fabrica tá na mesma pasta de gerente de desenhos
 from fabrica_de_figuras import FabricaDeFiguras
 
-
 class GerenteDeDesenhos:
     '''
-    define os desenhos, desenhar é legal quando é voce desenha no papel, 
-    mas quando eh voce que faz o papel eh outra historia
+    classe que controla e define os desenhos do paint
 '''
     def __init__(self, canvas, gerente_de_cores): #percebi que parte do que tem aqui tinha no main
         self.figuras= []#armazenar figuras
@@ -24,12 +22,12 @@ class GerenteDeDesenhos:
             
         )
         
-    def update_fig(self,event):
+    def update_fig(self,event):#atualiza a  figura que o usuario esta fazendo e redesenha (desenhar_fig)
         if self.desenho_atual:
           self.desenho_atual.update( event.x, event.y)
           self.desenhar_fig()
         
-    def incluir_figura_nova(self,event):
+    def incluir_figura_nova(self,event): 
         if self.desenho_atual:
             self.figuras.append((self.desenho_atual)) # salva a figura junto com a cor
         self.desenhar_fig()
