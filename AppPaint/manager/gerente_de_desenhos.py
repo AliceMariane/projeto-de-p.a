@@ -19,8 +19,8 @@ class GerenteDeDesenhos:
             self.desenho,
             event.x,
             event.y,
-            self.gerente_de_cores.cor_linha,
-            self.gerente_de_cores.cor_de_preenchimento
+            self.gerente_de_cores.cor_borda,
+            self.gerente_de_cores.cor_preenchimento
             
         )
         
