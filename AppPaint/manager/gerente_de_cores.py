@@ -12,12 +12,9 @@ class GerenteDeCores:
 
     def color_select_fill(self, nova_cor): #cor que o usuario escolheu
         self.cor_preenchimento= nova_cor
-        
-    def wtfIsThisColor (self):
-        return self.cor_borda #a cor que vai usar nas figuras
     
-    def cor_atual_da_linha (self):
-        return self.wtfIsThisColor()
+    def cor_atual_da_linha (self):#a cor que vai usar nas figuras
+        return self.cor_borda
 
     def cor_atual_do_preenchimento(self):
         return self.cor_preenchimento
