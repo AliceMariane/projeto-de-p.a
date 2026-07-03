@@ -5,11 +5,11 @@ class GerenteDeDesenhos:
     '''
     classe que controla e define os desenhos do paint
 '''
-    def __init__(self, canvas, gerente_de_cores): #percebi que parte do que tem aqui tinha no main
+    def __init__(self, canvas, gerente_de_cores): #percebi que parte do que tem aqui tinha no main da primeira etapa
         self.figuras= []#armazenar figuras
         self.canvas=canvas #os desenhos serao feitos aqui
-        self.desenho_atual= None
-        self.desenho= 'reta'#padrao, iria preferir que fosse rabisco, talvez troque pra rabisco depois
+        self.desenho_atual= None #default
+        self.desenho= 'mao_livre'#padrao
         self.gerente_de_cores= gerente_de_cores
         
     def iniciar_figura(self, event): #usa a fabrica pra montar o desenhos com os ingredientes 
