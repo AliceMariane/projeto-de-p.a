@@ -14,8 +14,32 @@ class GerenteDeCores:
         return self._cor_preenchimento
 
     @cor_atual_da_linha.setter
-    def color_select_outline(self, nova_cor): #cor que o usuario escolheu para a borda/linha das figuras
-        self.cor_borda= nova_cor
+    def cor_atual_da_linha (self, nova_cor): #cor que o usuario escolheu para a borda/linha das figuras
+        self._cor_borda= nova_cor
     @cor_atual_do_preenchimento.setter
-    def color_select_fill(self, nova_cor): #cor que o usuario escolheu para o preenchimento das giguras
-        self.cor_preenchimento= nova_cor
+    def cor_atual_do_preenchimento(self, nova_cor): #cor que o usuario escolheu para o preenchimento das giguras
+        self._cor_preenchimento= nova_cor
+
+
+    #pra manter as alteracoes sem ter que voltar pra mexer em gerente de desenhos depois disso
+    #  |
+    #  |
+    #  v
+
+    
+    @property
+    def cor_borda(self):
+        return self._cor_borda
+    @property
+    def cor_preenchimento(self):
+        return self._cor_preenchimento
+
+
+
+    @cor_borda.setter
+    def cor_borda(self, nova_cor):
+        self._cor_borda = nova_cor
+
+    @cor_preenchimento.setter
+    def cor_preenchimento(self, nova_cor):
+        self._cor_preenchimento = nova_cor
