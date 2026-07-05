@@ -64,7 +64,21 @@ class Elipse(Figura):
     os dois vértices são iguais.
     '''
     
-    return (
-    self.ini_x == self.fim_x and
-    self.ini_y == self.fim_y
-    )
+    return not self.figura_valida()
+
+
+
+  def figura_valida (self, min=5):
+    ''' 
+    evita fazer a elipse se comportar como reta
+    '''
+    largura= self.fim_x- self.ini_x
+    altura= self.fim_y- self.ini_y
+
+    if largura<0:
+      largura= -largura
+
+    if altura<0:
+      altura= -altura
+
+    return largura>=min and altura>= min
