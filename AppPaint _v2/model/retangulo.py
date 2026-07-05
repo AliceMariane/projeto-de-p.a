@@ -66,13 +66,24 @@ class Retangulo(Figura):
 
   def incompleta(self):
     '''
-    Verifica se o Retângulo é válido.
-
-    A elipse é inválida quando 
-    os dois vértices são iguais.
+    Verifica se retangulo pode ser criado
     '''
-      
-    return (
-    self.ini_x == self.fim_x and
-    self.ini_y == self.fim_y
-    )
+    
+    return not self.figura_valida()
+
+
+
+  def figura_valida (self, minimo=5):
+    ''' 
+    evita fazer o retangulo se comportar como reta
+    '''
+    largura= self.fim_x- self.ini_x
+    altura= self.fim_y- self.ini_y
+
+    if largura<0:
+      largura= -largura
+
+    if altura<0:
+      altura= -altura
+
+    return largura>=minimo and altura>= minimo
