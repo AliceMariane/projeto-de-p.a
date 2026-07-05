@@ -68,7 +68,7 @@ class Elipse(Figura):
 
 
 
-  def figura_valida (self, min=5):
+  def figura_valida (self, minimo=5):
     ''' 
     evita fazer a elipse se comportar como reta
     '''
@@ -81,4 +81,4 @@ class Elipse(Figura):
     if altura<0:
       altura= -altura
 
-    return largura>=min and altura>= min
+    return largura>=minimmo and altura>= minimo
