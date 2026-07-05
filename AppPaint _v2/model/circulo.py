@@ -11,7 +11,7 @@ class Circulo(Figura):
   O centro é definido no primeiro clique do mouse.
 
   Enquanto o usuário arrasta o mouse,
-  o raio é recalculadoem tempo real utilizando
+  o raio é recalculado em tempo real utilizando
   a distância entre o centro e a posição atual do mouse.
   '''
   
@@ -41,8 +41,8 @@ class Circulo(Figura):
     até o ponto atual do mouse
     '''
     
-    self.raio = ((self.cx)**2 +
-                 (self.cy)**2 
+    self.raio = ((x-self.cx)**2 +
+                 (y-self.cy)**2 
                 ) **0.5
   
   def desenhar(self, canvas):
@@ -79,4 +79,4 @@ class Circulo(Figura):
     se o raio for igual a 0
     '''
     
-    return self.raio == 0
+    return self.raio <= 0 
