@@ -1,4 +1,4 @@
-from AppPaint.Figuras.figura import Figura
+from AppPaint_v2.model.figura import Figura
 
 class Retangulo(Figura):
   '''
