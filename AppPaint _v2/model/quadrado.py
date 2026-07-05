@@ -73,4 +73,12 @@ class Quadrado(Figura):
     Verifica se o quadrado foi desenhado corretamente.
     '''
     
-    return abs(self.fim_x - self.ini_x) == 0
+    return not self.figura_valida()
+
+  def figura_valida(self, minimo=5):
+    #quadrado nao pode ser uma reta
+    lado= max(
+        abs(self.fim_x - self.ini_x),
+        abs(self.fim_y - self.ini_y)
+    )
+    return lado>= minimo
