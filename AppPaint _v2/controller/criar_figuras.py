@@ -1,10 +1,10 @@
 #importando as classes de figuras
-from Figuras.reta import Reta
-from Figuras.circulo import Circulo
-from Figuras.elipse import Elipse
-from Figuras.mao_livre import MaoLivre
-from Figuras.retangulo import Retangulo
-from Figuras.quadrado import Quadrado
+from model.reta import Reta
+from model.circulo import Circulo
+from model.elipse import Elipse
+from model.mao_livre import MaoLivre
+from model.retangulo import Retangulo
+from model.quadrado import Quadrado
 
 
 class  CriarFiguras:
