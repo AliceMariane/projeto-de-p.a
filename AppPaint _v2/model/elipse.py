@@ -1,5 +1,7 @@
-from AppPaint_v2.model.figura import Figura
+from dataclasses import dataclass, field
+from figura import Figura
 
+@dataclass
 class Elipse(Figura):
   '''
   Representa uma elipse.
@@ -10,37 +12,52 @@ class Elipse(Figura):
   Esses vértices são definidos pelo clique
   inicial e pela posição atual do mouse.
   '''
+  # Primeiro Vértice do retângulo delimitador (x, y)
+  _ini_x : int
+  _ini_y : int
   
-  def __init__(self, x, y, cor_borda= 'black', cor_preenchimento= ''):
-    super().__init__(cor_borda, cor_preenchimento)
+  # Segundo Vértice do retângulo delimitador (x, y)
+  _fim_x : int = field(init= False)
+  _fim_y : int = field(init= False)
+  
+  def __post_init__(self):
+    '''
+    Começa o segundo ponto do retangulo delimitador
+    com as mesmas coordenadas do primeiro
+    '''
     
-    # Primeiro Vértice do retângulo delimitador (x, y)
-    self.ini_x = x
-    self.ini_y = y
-    
-    # Segundo Vértice do retângulo delimitador (x, y)
-    self.fim_x = x
-    self.fim_y = y
+    self._fim_x = self._ini_x
+    self._fim_y = self._ini_y
 
+  @property
+  def pontos(self):
+    '''
+    Retorna os vértices do retângulo delimitador.
+    '''
+    
+    return (
+      self._ini_x,
+      self._ini_y,
+      self._fim_x,
+      self._fim_y
+    )
+  
   def atualizar(self, x, y):
     '''
-    Atualiza o segudo vértice do retângulo delimitador (x, y) da elipse
+    Atualiza o segundo vértice do retângulo delimitador (x, y) da elipse
     '''
     
-    self.fim_x = x
-    self.fim_y = y
+    self._fim_x = x
+    self._fim_y = y
 
   def desenhar(self, canvas):
     '''
     Desenha de forma definitiva a elipse na tela
     '''
     
-    canvas.create_oval(self.ini_x, 
-                      self.ini_y, 
-                      self.fim_x, 
-                      self.fim_y, 
-                      outline= self.cor_borda, 
-                      fill= self.cor_preenchimento)
+    canvas.create_oval(*self.pontos, 
+                      outline= self._cor_borda, 
+                      fill= self._cor_preenchimento)
 
   def desenhar_preview(self, canvas):
     '''
@@ -48,12 +65,9 @@ class Elipse(Figura):
     real enquanto o botão do mouse está sendo pressionado
     '''
     
-    canvas.create_oval(self.ini_x, 
-                      self.ini_y, 
-                      self.fim_x, 
-                      self.fim_y, 
-                      outline= self.cor_borda, 
-                      fill= self.cor_preenchimento,
+    canvas.create_oval(*self.pontos, 
+                      outline= self._cor_borda, 
+                      fill= self._cor_preenchimento,
                       dash= (4, 2))
 
   def incompleta(self):
@@ -64,21 +78,13 @@ class Elipse(Figura):
     os dois vértices são iguais.
     '''
     
-    return not self.figura_valida()
+    return not self._figura_valida()
 
-
-
-  def figura_valida (self, minimo=5):
+  def _figura_valida(self, minimo=5):
     ''' 
-    evita fazer a elipse se comportar como reta
+    Evita fazer o retangulo se comportar como reta
     '''
-    largura= self.fim_x- self.ini_x
-    altura= self.fim_y- self.ini_y
+    largura = abs(self._fim_x- self._ini_x)
+    altura = abs(self._fim_y- self._ini_y)
 
-    if largura<0:
-      largura= -largura
-
-    if altura<0:
-      altura= -altura
-
-    return largura>=minimmo and altura>= minimo
+    return largura>=minimo and altura>= minimo
