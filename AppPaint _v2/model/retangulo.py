@@ -80,8 +80,6 @@ class Retangulo(Figura):
     
     return not self._figura_valida()
 
-
-
   def _figura_valida (self, minimo=5):
     ''' 
     Evita fazer o retangulo se comportar como reta
