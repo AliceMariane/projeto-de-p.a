@@ -13,24 +13,24 @@ class  CriarFiguras:
     '''
     
     @staticmethod
-    def criar (desenho,x, y, cor_borda, cor_preenchimento):
+    def criar (desenho,x, y, _cor_borda, _cor_preenchimento):
 
         # estrutura----> if desenho == 'n', return a classe N com o que 'n' usa
         
         if desenho=='Reta':#se a figura for reta
-            return Reta(x,y,cor_borda)
+            return Reta(x,y,_cor_borda)
         
         elif desenho=='Retangulo':
-            return Retangulo(x,y,cor_borda,cor_preenchimento)
+            return Retangulo(x,y,_cor_borda,_cor_preenchimento)
         
         elif desenho=='Circulo':
-            return Circulo(x,y,cor_borda, cor_preenchimento)
+            return Circulo(x,y,_cor_borda, _cor_preenchimento)
         
         elif desenho=='Elipse':
-            return Elipse(x,y,cor_borda, cor_preenchimento)
+            return Elipse(x,y,_cor_borda, _cor_preenchimento)
         
         elif desenho=='Quadrado':
-            return Quadrado(x,y,cor_borda, cor_preenchimento)
+            return Quadrado(x,y,_cor_borda, _cor_preenchimento)
         
         else:#desenha a mao livre==rabisco
-            return MaoLivre(x,y,cor_borda)
+            return MaoLivre(x,y,_cor_borda)
