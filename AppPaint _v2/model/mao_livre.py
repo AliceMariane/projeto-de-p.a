@@ -1,5 +1,7 @@
-from AppPaint_v2.model.figura import Figura
+from dataclasses import dataclass, field
+from figura import Figura
 
+@dataclass
 class MaoLivre(Figura):
   '''
   Representa um desenho à mão livre.
@@ -13,34 +15,36 @@ class MaoLivre(Figura):
   formando uma única linha.
   '''
   
-  def __init__(self, x, y, cor_borda= 'black'): # maolivre == rabisco
-    super().__init__(cor_borda)
-    
-    '''
-    Cria um novo desenho livremente.
+  _ini_x : int
+  _ini_y : int
+  
+  _pontos: list[tuple[int, int]] = field(init= False)
+  
+  def __post_init__(self):
+    self._pontos = [(self._ini_x, self._ini_y)]
 
-    O primeiro clique do mouse gera
-    o primeiro ponto da lista.
+  @property
+  def pontos(self):
+    '''
+    Retorna a lista de pontos do rabisco.
     '''
     
-    self.pontos = [
-      (x, y)
-    ]
-
+    return self._pontos
+    
   def atualizar(self, x, y):
     '''
-    Atualiza o ultimo ponto (x, y) do rabisco
+    Adiciona um novo ponto (x, y) ao rabisco
     '''
     
-    self.pontos.append((x, y))
+    self._pontos.append((x, y))
 
   def desenhar(self, canvas):
     '''
     Desenha de forma definitiva o rabisco na tela
     '''
     
-    canvas.create_line((self.pontos), 
-                        outline= self.cor_borda)
+    canvas.create_line(self.pontos, 
+                        fill= self._cor_borda)
 
   def desenhar_preview(self, canvas):
     '''
@@ -48,13 +52,14 @@ class MaoLivre(Figura):
     real enquanto o botão do mouse está sendo pressionado
     '''
     
-    canvas.create_line((self.pontos), 
-                        outline= self.cor_borda,
+    canvas.create_line(self.pontos, 
+                        fill= self._cor_borda,
                         dash= (4, 2))
 
   def incompleta(self):
-      '''
-      Verifica se existe mais de 1 ponto para criar um rabisco
-      '''
-      
-      return len(self.pontos) <= 1
+    '''
+    Verifica se existe pontos suficientes
+    para ser considerado uma figura válida
+    '''
+    
+    return len(self._pontos) <= 1
