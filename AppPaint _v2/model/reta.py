@@ -1,53 +1,60 @@
-from AppPaint_v2.model.figura import Figura
+from dataclasses import dataclass, field
+from figura import Figura
 
+@dataclass
 class Reta(Figura):
   '''
   Representa uma reta desenhada pelo usuário.
-
-  A reta é definida por dois pontos:
-    > ponto inicial (ini_x, ini_y)
-    > ponto final (fim_x, fim_y)
-
-  Enquanto o botão do mouse permanece pressionado,
-  o ponto final é atualizado para acompanhar o cursor.
+  
+  O primeiro click do mouse define o ponto inicial,
+  o ponto final começa igual ao ponto inicial.
   '''
 
-  def __init__(self, x, y, cor_borda= 'black', cor_preenchimento= ''):
-    super().__init__(cor_borda, cor_preenchimento)
+  # Primeiro Vértice (x, y)
+  _ini_x : int
+  _ini_y : int
+  
+  # Segundo Vértice (x, y)
+  _fim_x : int = field(init= False)
+  _fim_y : int = field(init= False)
+  
+  @property
+  def pontos(self):
     '''
-    Cria uma nova reta
-    
-    O primeiro click do mouse define o ponto inicial,
-    o ponto final começa igual ao ponto inicial.
+    Retorna os vértices da reta.
     '''
     
-    #coordenadas do ponto inicial
-    self.ini_x = x
-    self.ini_y = y
+    return (
+      self._ini_x,
+      self._ini_y,
+      self._fim_x,
+      self._fim_y
+    )
     
-    #coordenadas do ponto final
-    self.fim_x = x
-    self.fim_y = y
+  def __post_init__(self):
+    '''
+    Inicializa o ponto final da reta
+    com as mesmas coordenadas do ponto inicial
+    '''
+    
+    self._fim_x = self._ini_x
+    self._fim_y = self._ini_y
 
   def atualizar(self, x, y):
     '''
     Atualiza o ultimo ponto (x, y) da reta.
     '''
     
-    self.fim_x = x
-    self.fim_y = y
+    self._fim_x = x
+    self._fim_y = y
 
   def desenhar(self, canvas):
     '''
     Desenha de forma definitiva a reta na tela.
     '''
     
-    canvas.create_line(self.ini_x, 
-                        self.ini_y, 
-                        self.fim_x, 
-                        self.fim_y, 
-                        outline= self.cor_borda, 
-                        fill= self.cor_preenchimento)
+    canvas.create_line(*self.pontos, 
+                        fill= self._cor_borda)
 
   def desenhar_preview(self, canvas):
     '''
@@ -55,23 +62,20 @@ class Reta(Figura):
     real enquanto o botão do mouse está sendo pressionado.
     '''
     
-    canvas.create_line(self.ini_x, 
-                      self.ini_y, 
-                      self.fim_x, 
-                      self.fim_y, 
-                      outline= self.cor_borda, 
-                      fill= self.cor_preenchimento,
+    canvas.create_line(*self.pontos, 
+                      fill= self._cor_borda,
                       dash= (4, 2))
 
   def incompleta(self):
-      '''
-      Verifica se a Reta é válida.
-      
-      Uma reta é considerada incompleta 
-      quando os pontos são iguais.
-      '''
-      
-      return (
-      self.ini_x == self.fim_x and
-      self.ini_y == self.fim_y
-      )
+    '''
+    Verifica se a Reta é válida.
+    
+    Uma reta é considerada incompleta 
+    quando os pontos são iguais.
+    '''
+    
+    return (
+    self._ini_x == self._fim_x and
+    self._ini_y == self._fim_y
+    )
+    
