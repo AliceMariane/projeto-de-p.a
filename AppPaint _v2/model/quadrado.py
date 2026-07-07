@@ -1,5 +1,7 @@
-from AppPaint_v2.model.figura import Figura
+from dataclasses import dataclass, field
+from figura import Figura
 
+@dataclass
 class Quadrado(Figura):
   '''
   Representa um quadrado desenhado pelo usuário.
@@ -13,25 +15,55 @@ class Quadrado(Figura):
   mouse enquanto o botão estiver pressionado.
   '''
   
-  def __init__(self, x, y, cor_borda= 'black', cor_preenchimento= ''):
-    super().__init__(cor_borda, cor_preenchimento)
+  # Primeiro Vértice (x, y)
+  _ini_x : int
+  _ini_y : int
+  
+  # Segundo Vértice (x, y)
+  _fim_x : int = field(init= False)
+  _fim_y : int = field(init= False)  
+  
+  def __post_init__(self):
     '''
-    Cria um novo quadrado.
-
-    Inicialmente os dois vértices possuem
-    as mesmas coordenadas.
+    Começa o ultimo ponto do quadrado 
+    com as mesmas coordenadas do primeiro
     '''
-    # Primeiro Vértice (x, y)
-    self.ini_x = x
-    self.ini_y = y
     
-    # Segundo Vértice (x, y)
-    self.fim_x = x
-    self.fim_y = y
-
+    self._fim_x = self._ini_x
+    self._fim_y = self._ini_y
+    
+  @property
+  def pontos(self):
+    '''
+    Retorna os vértices do quadrado.
+    '''
+    
+    return (
+      self._ini_x,
+      self._ini_y,
+      self._fim_x,
+      self._fim_y
+    )
+  
+  @property
+  def ini_x(self):
+    return self._ini_x
+  
+  @property
+  def ini_y(self):
+    return self._ini_y
+  
+  @property
+  def fim_x(self):
+    return self._fim_x
+  
+  @property
+  def fim_y(self):
+    return self._fim_y
+    
   def atualizar(self, x, y):
     '''
-    Atualiza o segundo vértice (x, y) do quadrado,
+    Atualiza o ultimo vértice (x, y) do quadrado,
     ajustando a largura e a altura para manter os lados iguais
     '''
     
@@ -39,20 +71,17 @@ class Quadrado(Figura):
     dy = y - self.ini_y
     
     lado = max(abs(dx), abs(dy))
-    self.fim_x = self.ini_x + (lado if dx >= 0 else -lado)
-    self.fim_y = self.ini_y + (lado if dy >= 0 else -lado)
+    self._fim_x = self.ini_x + (lado if dx >= 0 else -lado)
+    self._fim_y = self.ini_y + (lado if dy >= 0 else -lado)
 
   def desenhar(self, canvas):
     '''
     Desenha de forma definitiva o quadrado na tela
     '''
     
-    canvas.create_rectangle(self.ini_x, 
-                            self.ini_y, 
-                            self.fim_x, 
-                            self.fim_y, 
-                            outline= self.cor_borda, 
-                            fill= self.cor_preenchimento)
+    canvas.create_rectangle(*self.pontos, 
+                            outline= self._cor_borda, 
+                            fill= self._cor_preenchimento)
 
   def desenhar_preview(self, canvas):
     '''
@@ -60,12 +89,9 @@ class Quadrado(Figura):
     real enquanto o botão do mouse está sendo pressionado
     '''
     
-    canvas.create_rectangle(self.ini_x, 
-                            self.ini_y, 
-                            self.fim_x, 
-                            self.fim_y, 
-                            outline= self.cor_borda, 
-                            fill= self.cor_preenchimento,
+    canvas.create_rectangle(*self.pontos, 
+                            outline= self._cor_borda, 
+                            fill= self._cor_preenchimento,
                             dash= (4, 2))
 
   def incompleta(self):
@@ -73,12 +99,6 @@ class Quadrado(Figura):
     Verifica se o quadrado foi desenhado corretamente.
     '''
     
-    return not self.figura_valida()
-
-  def figura_valida(self, minimo=5):
-    #quadrado nao pode ser uma reta
-    lado= max(
-        abs(self.fim_x - self.ini_x),
-        abs(self.fim_y - self.ini_y)
-    )
-    return lado>= minimo
+    return (abs(self.fim_x - self.ini_x) == 0 and
+            abs(self.fim_y - self.ini_y) == 0
+      )
