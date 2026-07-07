@@ -1,37 +1,67 @@
-from AppPaint_v2.model.figura import Figura
+from dataclasses import dataclass, field
+from figura import Figura
 
+@dataclass
 class Circulo(Figura):
   '''
   Representa um círculo desenhado pelo usuário.
-
-  O círculo é definido por:
-    > centro (cx, cy)
-    > raio
-
-  O centro é definido no primeiro clique do mouse.
 
   Enquanto o usuário arrasta o mouse,
   o raio é recalculado em tempo real utilizando
   a distância entre o centro e a posição atual do mouse.
   '''
+  _cx: int
+  _cy: int
+
+  _raio: float = field(init=False)
   
-  def __init__(self, x, y, cor_borda= "black", cor_preenchimento= ''):
-    super().__init__(cor_borda, cor_preenchimento)
-    '''
-    Cria um novo círculo.
-
-    O primeiro clique define o centro do círculo.
-
-    Inicialmente o raio vale zero,
-    sendo atualizado durante o movimento do mouse.
+  def __post_init__(self):
+    '''  
+    Inicializa o circulo com raio 0
     '''
     
-    # Coordenadas do Centro
-    self.cx = x
-    self.cy = y
+    self._raio = 0
+  
+  @property
+  def centro(self):
+    '''
+    Retorna as coordenadas do centro
+    '''
     
-    # Raio Inicial
-    self.raio = 0
+    return (self.cx, self.cy)
+  
+  @property
+  def cx(self):
+    return self._cx
+  
+  @property
+  def cy(self):
+    return self._cy
+  
+  @property
+  def limites(self):
+    return (
+            self.cx - self.raio,
+            self.cy - self.raio, 
+            self.cx + self.raio, 
+            self.cy + self.raio
+            )
+  
+  @property
+  def raio(self):
+    '''
+    Retorna o raio do circulo
+    '''
+    
+    return self._raio
+  
+  @raio.setter
+  def raio(self, valor):
+    '''
+    Atualiza o valor do raio
+    '''
+    
+    self._raio = valor
     
   def atualizar(self, x, y):
     '''
@@ -41,8 +71,8 @@ class Circulo(Figura):
     até o ponto atual do mouse
     '''
     
-    self.raio = ((x-self.cx)**2 +
-                 (y-self.cy)**2 
+    self.raio = ((x - self.cx)**2 +
+                 (y- self.cy)**2 
                 ) **0.5
   
   def desenhar(self, canvas):
@@ -50,12 +80,9 @@ class Circulo(Figura):
     Desenha de forma definitiva o cículo na tela
     '''
     
-    canvas.create_oval(self.cx - self.raio,
-                      self.cy - self.raio, 
-                      self.cx + self.raio, 
-                      self.cy + self.raio,
-                      outline= self.cor_borda, 
-                      fill= self.cor_preenchimento)
+    canvas.create_oval(*self.limites,
+                      outline= self._cor_borda, 
+                      fill= self._cor_preenchimento)
   
   def desenhar_preview(self, canvas):
     '''
@@ -63,12 +90,9 @@ class Circulo(Figura):
     real enquanto o botão do mouse está sendo pressionado
     '''
     
-    canvas.create_oval(self.cx - self.raio,
-                      self.cy - self.raio, 
-                      self.cx + self.raio, 
-                      self.cy + self.raio,
-                      outline= self.cor_borda, 
-                      fill= self.cor_preenchimento,
+    canvas.create_oval(*self.limites,
+                      outline= self._cor_borda, 
+                      fill= self._cor_preenchimento,
                       dash= (4, 2))
   
   def incompleta(self):
@@ -79,4 +103,4 @@ class Circulo(Figura):
     se o raio for igual a 0
     '''
     
-    return self.raio <= 0 
+    return self.raio == 0
