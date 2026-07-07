@@ -40,6 +40,10 @@ class Circulo(Figura):
   
   @property
   def limites(self):
+    '''
+    Retorna o quadrado delimitador do círculo
+    '''
+    
     return (
             self.cx - self.raio,
             self.cy - self.raio, 
