@@ -33,4 +33,4 @@ class  CriarFiguras:
             return Quadrado(x,y,_cor_borda, _cor_preenchimento)
         
         else:#desenha a mao livre==rabisco
-            return MaoLivre(x,y,_cor_borda)
+            return MaoLivre(x,y)#essa condicional tava entrando em conflito com a classe MaoLivre, inclusive seria interessante transformar esse codigo en dicionario
