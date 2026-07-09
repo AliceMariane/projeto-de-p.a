@@ -8,34 +8,38 @@ from tkinter import colorchooser
 
 def incluir_newfig(formas):
    print(f"->Ok:'{formas}'")
+   
+   
+   
 class Janela():
   
-  def __init__(self, controller_reechamada=None):
-    self.root = Tk()
-    self.root.title("Paint CAR")
-    self.root.geometry("720x1080")
-# Controle de erros
-    self.notificar_controller = controller_reechamada if controller_reechamada else self.mock_controller
+    def __init__(self, controller_reechamada=None):
+        self.root = Tk()
+        self.root.title("Paint CAR")
+        self.root.geometry("720x1080")
+    # Controle de erros
+        self.notificar_controller = (controller_reechamada if controller_reechamada else self.mock_controller)
 
-    self.c_linha = 'black' # c = cor
-    self.c_fundo = 'white'
-    self.icones_em_memoria = {}
-    # Construir layout
-    self.layout()
+        self.c_linha = 'black' # c = cor
+        self.c_fundo = 'white'
+        self.icones_em_memoria = {}
+        # Construir layout
+        self.layout()
+        
 # Metodos temporarios
-   def mock_controller(self, acao, valor):
+    def mock_controller(self, acao, valor):
        print(f'Controller acionado: {acao} ->{valor}')
 
 # funcao para rodar o codigo
-   def btao_icone(self, container, text, nome_icone, command ):
-       return Button(container, text='text', command=command, width=10)
+    def btao_icone(self, container, text, nome_icone, command ):
+       return Button(container, text=text, command=command, width=10)
 
-   def abrir_paleta(self, tipo):
+    def abrir_paleta(self, tipo):
        cor = colorchooser.askcolor()[1]
        if cor:
           print (f'Cor escolhida para {tipo}: {cor}')
 
-   def layout(self):
+    def layout(self):
        self.paddings = {'padx': 5, 'pady': 5} 
     
     # Frame do menu
@@ -54,13 +58,18 @@ class Janela():
        self.canvas.pack(side=RIGHT,
                             fill=BOTH,
                             expand=True)
+       #eventos do mouse
+       self.canvas.bind("<Button-1>", self.comecar_desenho)
+       self.canvas.bind("<B1-Motion>", self.arrastar_desenho)
+       self.canvas.bind("<ButtonRelease-1>", self.acabar_desenho)
+       
     # Separação do f_main(Menu principal)
        self.menu_formas()
        self.menu_ferramentas()
        self.menu_cores()
-       self.menu_visulizacao()
+       self.menu_visualizacao()
 
-   def menu_formas(self):
+    def menu_formas(self):
 
        Label(self.f_menu,
              text='Formas',
@@ -69,28 +78,27 @@ class Janela():
                       bg="#69b0fc")
        f_grid.pack()
 
-   formas = [{'id': 'reta', 'nome': 'Reta'},
-                  {'id': 'maolivre', 'nome':'Mao Livre'},
-                  {'id': 'circulo', 'nome':'Elipse'},
-                  {'id': 'retangulo', 'nome':'Retangulo'},
-                  {'id': 'quadrado', 'nome':'Quadrado'},
-                  
-        ]
-   row_idx, col_idx = 0, 0 
-   for forma in formas:
-       btao = self.btao_icone(
-          container=f_grid,
-          text=forma['nome'],
-          nome_icone=forma['id'],
-          command=lambda f=forma['id']: self.notificar_controller('selecionar_forma', f)
-       )
-       btao.grid(row=row_idx, column= col_idx, padx=2, pady=2)
-       col_idx += 1
-       if col_idx > 1:
-          col_idx = 0
-          row_idx += 1
+       formas = [{'id': 'reta', 'nome': 'Reta'},
+            {'id': 'maolivre', 'nome':'Mao Livre'},
+            {'id': 'circulo', 'nome':'Elipse'},
+            {'id': 'retangulo', 'nome':'Retangulo'},
+            {'id': 'quadrado', 'nome':'Quadrado'} ]
+       row_idx, col_idx = 0, 0 
+       for forma in formas:
+            btao = self.btao_icone(
+            container=f_grid,
+            text=forma['nome'],
+            nome_icone=forma['id'],
+            command=lambda f=forma['id']: self.notificar_controller('selecionar_forma', f)
+        )
+            btao.grid(row=row_idx, column= col_idx, padx=2, pady=2)
+            col_idx += 1
+       
+            if col_idx > 1:
+                col_idx = 0
+                row_idx += 1
 
-   def menu_ferramentas(self):
+    def menu_ferramentas(self):
        Label(self.f_menu, text= 'Ferramentas',
              bg='#69b0fc', fg='white',
              font=("Arial", 10, "bold")).pack(pady=(15, 5))
@@ -107,13 +115,13 @@ class Janela():
 
        self.cb_estilo.bind('<<ComboboxSelected>>', lambda e :self.notificar_controller("mudar_estilo", self.cb_estilo.get()))
 
-   def menu_cores(self):
+    def menu_cores(self):
        Label(self.f_menu,
              text="CORES", bg="#69b0fc", fg='white',
              font=("Arial", 10, "bold")).pack(pady=(15, 5))
        self.btao_cor_linha = Button(self.f_menu,
                                     text='Cor da Linha',
-                                     bg=self.cor_linha, fg='white',
+                                     bg=self.c_linha, fg='white',
                                      relief=FLAT,
                                      command=lambda : self.abrir_paleta("linha"))
        self.btao_cor_linha.pack(fill=X, padx=10, pady=2)
@@ -126,11 +134,11 @@ class Janela():
                                     )
        self.btao_cor_fundo.pack(fill=X, padx=10 ,pady=2)
 
-   def menu_visualizacao(self):
+    def menu_visualizacao(self):
        Label(self.f_menu,
              text='VISUALIZAÇÃO',
              bg='#69b0fc', fg='white',
-             font=('Arial', 10, 'bold')).pack(pady(15, 5))
+             font=('Arial', 10, 'bold')).pack(pady=(15, 5))
        f_zoom = Frame(self.f_menu, bg="#69b0fc")
        f_zoom.pack(fill=X, padx=10)
 
@@ -139,23 +147,41 @@ class Janela():
               bg="#4a4a4a", fg='white',
               relief=FLAT,
               width=7,
-              command=lambda: self.notifica_controller('zoom', 'in')).pack(side=LEFT, expand=True, padx=(0,2))
+              command=lambda: self.notificar_controller('zoom', 'in')).pack(side=LEFT, expand=True, padx=(0,2))
+       
        Button(f_zoom,
                      text="Zoom - ",
                      bg="#4a4a4a", fg='white',
                      relief=FLAT,
                      width=7,
                      command=lambda: self.notifica_controller('zoom', 'out')).pack(side=RIGHT, expand=True,padx=(2, 0))
+       
        Button(self.f_menu, 
               text="Limpar Tela",
               bg="#8a2e2e", fg='white', 
             relief=FLAT,
             command=lambda: self.notificar_controller('limpar_tela',None)).pack(side=BOTTOM, fill=X, padx=10, pady=20)
+       
+    def comecar_desenho(self, event):
+        print("Clicaram:", event.x, event.y)
+        self.notificar_controller("inicio", (event.x, event.y))
+
+
+    def arrastar_desenho(self, event):
+       self.notificar_controller("arrastar", (event.x, event.y))
+
+
+    def acabar_desenho(self, event):
+       self.notificar_controller("fim", None)
+       
+    def redesenhar(self, figuras):
+        self.canvas.delete("all")   # limpa a tela
+
+        for figura in figuras[:-1]: #olha todos os elementos da lista de figuras menos o ultimo
+            figura.desenhar(self.canvas)
+            
+        if figuras: #se figuras nao for uma lista vazia, entrega o ultimo elemento da lista
+            figuras[-1].desenhar(self.canvas)
                       
     
-
-
-if __name__ == "__main__":
-   app=Janela()
-   app.root.mainloop()
 
