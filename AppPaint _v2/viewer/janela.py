@@ -1,8 +1,8 @@
 from tkinter import * 
 from tkinter import ttk
 from tkinter import colorchooser
-#from AppPaint_v2.controller.criar_figuras import Reta, Circulo, Elipse, MaoLivre, Retangulo, Quadrado
-#from AppPaint_v2.controller.controlador_principal import incluir_newfig
+from AppPaint_v2.controller.criar_figuras import Reta, Circulo, Elipse, MaoLivre, Retangulo, Quadrado
+from AppPaint_v2.controller.controlador_principal import incluir_newfig
 #import os
 #from PIL import Image, ImageTk
 
@@ -80,9 +80,11 @@ class Janela():
 
        formas = [{'id': 'reta', 'nome': 'Reta'},
             {'id': 'maolivre', 'nome':'Mao Livre'},
-            {'id': 'circulo', 'nome':'Elipse'},
+            {'id': 'circulo', 'nome':'Circulo'},
             {'id': 'retangulo', 'nome':'Retangulo'},
-            {'id': 'quadrado', 'nome':'Quadrado'} ]
+            {'id': 'quadrado', 'nome':'Quadrado'},
+             {'id': 'elipse', 'nome': 'Elipse'}
+               ]
        row_idx, col_idx = 0, 0 
        for forma in formas:
             btao = self.btao_icone(
@@ -154,7 +156,7 @@ class Janela():
                      bg="#4a4a4a", fg='white',
                      relief=FLAT,
                      width=7,
-                     command=lambda: self.notifica_controller('zoom', 'out')).pack(side=RIGHT, expand=True,padx=(2, 0))
+                     command=lambda: self.notificar_controller('zoom', 'out')).pack(side=RIGHT, expand=True,padx=(2, 0))
        
        Button(self.f_menu, 
               text="Limpar Tela",
@@ -174,14 +176,20 @@ class Janela():
     def acabar_desenho(self, event):
        self.notificar_controller("fim", None)
        
-    def redesenhar(self, figuras):
+    def redesenhar(self, figuras_pronta, figura_atual=None):
         self.canvas.delete("all")   # limpa a tela
 
-        for figura in figuras[:-1]: #olha todos os elementos da lista de figuras menos o ultimo
-            figura.desenhar(self.canvas)
-            
-        if figuras: #se figuras nao for uma lista vazia, entrega o ultimo elemento da lista
-            figuras[-1].desenhar(self.canvas)
+        #Desenhar figura selecionada
+        for figura in figuras_pronta:
+           figura.desenhar(self.canvas)
+
+        if figura_atual:
+           figura_atual.desenhar_preview(self.canvas)
+
+        
+    
+
+
                       
     
 
