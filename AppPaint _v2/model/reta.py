@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from figura import Figura
+from .figura import Figura
 
 @dataclass
 class Reta(Figura):
