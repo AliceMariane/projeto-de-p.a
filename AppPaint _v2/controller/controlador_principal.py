@@ -14,7 +14,7 @@ class ControladorPrincipal:
   _desenho_atual: Figura | None = None #default
   _desenho:str = 'reta' #figura padrao
   _cores: Cores= field(default_factory= Cores) #cores para as figuras
-  _janela : Janela= field(default_factory= Janela)
+  _janela : Janela| None=None
   _model: Desenho = field(default_factory= Desenho)
         
   def iniciar_fig(self,x,y): #figura que esta sendo criado pelo usuario
@@ -22,13 +22,13 @@ class ControladorPrincipal:
                                         self._desenho,
                                         x,
                                         y,
-                                        self._cores.cor_linha,
-                                        self._cores.cor_de_preenchimento
+                                        self._cores._cor_borda,
+                                        self._cores._cor_preenchimento
             )
     
   def update_fig(self, x, y):#atualizar figura atual
       if self._desenho_atual:
-        self._desenho_atual.update(x, y)
+        self._desenho_atual.atualizar(x, y)
 
         figuras = self._model.get_figuras()+ [self._desenho_atual]
         self._janela.redesenhar(figuras)
@@ -47,3 +47,23 @@ class ControladorPrincipal:
     self._model.clear()
     self._desenho_atual = None
     self._janela.redesenhar(self._model.get_figuras())
+
+
+  #aciona que funcao deve ser 'chamada' para cada acao
+  def notificar(self, acao, valor):
+
+    acoes = {
+        "selecionar_forma": lambda: self.set_fig(valor),
+        "limpar_tela": self.clean_all,
+        "mudar_estilo": lambda: self.mudar_estilo(valor),
+        "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
+        "zoom": lambda: self.zoom(valor),
+        "inicio": lambda: self.iniciar_fig(*valor),
+        "arrastar": lambda: self.update_fig(*valor),
+        "fim": self.incluir_newfig,
+    }
+
+    funcao = acoes.get(acao)
+
+    if funcao:
+        funcao()
