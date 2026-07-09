@@ -1,12 +1,16 @@
 from tkinter import *
 from tkinter import ttk
-from janela import Janela
+from viewer.janela import Janela
+from controller.controlador_principal import ControladorPrincipal
+
+
+
 
 def main():
-    root = Tk()
-    app = Janela(root)
-    root.mainloop()
-
+    controller = ControladorPrincipal()
+    view = Janela(controller.notificar)
+    controller._janela = view
+    view.root.mainloop()
 
 if __name__ == "__main__":
     main()
