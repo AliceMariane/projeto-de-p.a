@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod, dataclasses
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
 @dataclass
@@ -7,8 +7,8 @@ class Figura(ABC):
     Classe abstrata base para todas as figuras.
     '''
 
-    _cor_borda : str = "black"
-    _cor_preenchimento : str = ""
+    _cor_borda : str = field(default="black", init=False)
+    _cor_preenchimento : str = field(default="", init=False)
 
     @abstractmethod
     def atualizar(self, x, y):
