@@ -14,7 +14,7 @@ class ControladorPrincipal:
   _desenho_atual: Figura | None = None #default
   _desenho:str = 'reta' #figura padrao
   _cores: Cores= field(default_factory= Cores) #cores para as figuras
-  _janela : object | None=None
+  _janela : Janela| None=None
   _model: Desenho = field(default_factory= Desenho)
         
   def iniciar_fig(self,x,y): #figura que esta sendo criado pelo usuario
@@ -25,17 +25,20 @@ class ControladorPrincipal:
                                         self._cores._cor_borda,
                                         self._cores._cor_preenchimento
             )
-    print('iniciando figura')
+    
+  def iniciar_fig(self, x, y):
+     self._desenho_atual = CriarFiguras.criar(
+        self._desenho,
+        x, y,
+        self._cores._cor_borda,
+        self._cores._cor_preenchimento
+     )
+
   def update_fig(self, x, y):#atualizar figura atual
       if self._desenho_atual:
         self._desenho_atual.atualizar(x, y)
-       # print('atualizando figura')
-        figuras = self._model.get_figuras()+ [self._desenho_atual]
-      #  print('chamando redesenhar')
-        self._janela.redesenhar(figuras)
-        
-        
-          
+      self._janela.redesenhar(self._model.get_figuras())
+
   def incluir_newfig (self):#guardar e deixar na tela os desenhos que estao prontos
     if self._desenho_atual:
         self._model.adicionar(self._desenho_atual)
@@ -43,31 +46,42 @@ class ControladorPrincipal:
 
     self._janela.redesenhar(self._model.get_figuras())
 
-  def set_fig (self,desenho):#alterar tipo de figura exemplo: 'reta'----->'circulo'
-    self._desenho=desenho
     
   def clean_all(self):#manda apagar todos desenhos da tela
     self._model.clear()
     self._desenho_atual = None
-    self._janela.redesenhar(self._model.get_figuras(), self._desenho_atual)
+    self._janela.redesenhar(self._model.get_figuras())
 
+# funcao cores 
+  def set_cor(self, tipo, cor):
+  
+       if tipo == 'linha':
+          self._cores._cor_borda = cor
+       elif tipo == 'fundo':
+          self._cores_cor_preenchimento = cor
+
+  def set_fig(self, forma):
+     self._desenho = forma
+
+     
 
   #aciona que funcao deve ser 'chamada' para cada acao
   def notificar(self, acao, valor):
-      
+
     acoes = {
         "selecionar_forma": lambda: self.set_fig(valor),
         "limpar_tela": self.clean_all,
-        #"mudar_estilo": lambda: self.mudar_estilo(valor),
-        #"selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
-        #"zoom": lambda: self.zoom(valor),
+        "mudar_estilo": lambda: self.mudar_estilo(valor),
+        "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
+        "zoom": lambda: self.zoom(valor),
         "inicio": lambda: self.iniciar_fig(*valor),
         "arrastar": lambda: self.update_fig(*valor),
         "fim": self.incluir_newfig,
+        "mudar_cor": lambda: self.set_cor(*valor)
     }
 
     funcao = acoes.get(acao)
 
     if funcao:
         funcao()
-  #print('chamando')
+  
