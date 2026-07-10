@@ -13,24 +13,24 @@ class  CriarFiguras:
     '''
     
     @staticmethod
-    def criar (desenho,x, y, _cor_borda, _cor_preenchimento):
+    def criar (desenho,x, y, cor_borda, cor_preenchimento):
 
-        # estrutura----> if desenho == 'n', return a classe N com o que 'n' usa
+        #Estrura dicionario para as formas
         
-        if desenho=='reta':#se a figura for reta
-            return Reta(x,y,_cor_borda)
-        
-        elif desenho=='retangulo':
-            return Retangulo(x,y,_cor_borda,_cor_preenchimento)
-        
-        elif desenho=='circulo':
-            return Circulo(x,y,_cor_borda, _cor_preenchimento)
-        
-        elif desenho=='elipse':
-            return Elipse(x,y,_cor_borda, _cor_preenchimento)
-        
-        elif desenho=='quadrado':
-            return Quadrado(x,y,_cor_borda, _cor_preenchimento)
-        
-        else:#desenha a mao livre==rabisco
-            return MaoLivre(x,y, _cor_borda)
+        mapa_fig = {
+            'reta': Reta,
+            'retangulo': Retangulo,
+            'circulo': Circulo,
+            'elipse': Elipse,
+            'quadrado': Quadrado,
+            'maolivre': MaoLivre,
+        }
+
+        Classefig = mapa_fig.get(desenho, MaoLivre)
+
+        nova_fig = Classefig(x, y)
+
+        nova_fig._cor_borda = cor_borda
+        nova_fig._cor_preenchimento = cor_preenchimento
+
+        return nova_fig
