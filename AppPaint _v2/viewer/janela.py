@@ -1,8 +1,8 @@
 from tkinter import * 
 from tkinter import ttk
 from tkinter import colorchooser
-from AppPaint_v2.controller.criar_figuras import Reta, Circulo, Elipse, MaoLivre, Retangulo, Quadrado
-from AppPaint_v2.controller.controlador_principal import incluir_newfig
+from controller.criar_figuras import Reta, Circulo, Elipse, MaoLivre, Retangulo, Quadrado #se me lembrar de ter alterado outras coisas volto aqui (alice)
+#from controlador_principal import incluir_newfig<---------- isso tava causando erro de importacoes circulares, cuidado!!!
 #import os
 #from PIL import Image, ImageTk
 
