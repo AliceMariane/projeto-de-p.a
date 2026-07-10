@@ -19,25 +19,25 @@ class ControladorPrincipal:
         
   def iniciar_fig(self,x,y): #figura que esta sendo criado pelo usuario
     self._desenho_atual= CriarFiguras.criar(
-                                        self._desenho,
-                                        x,
-                                        y,
-                                        self._cores._cor_borda,
-                                        self._cores._cor_preenchimento
-            )
+                                      self._desenho,
+                                      x, y,
+                                      self._cores._cor_borda,
+                                      self._cores._cor_preenchimento
+          )
+    if self._desenho_atual is None:
+      print(f"Figura '{self._desenho}' não registrada.")
     
-  def iniciar_fig(self, x, y):
-     self._desenho_atual = CriarFiguras.criar(
-        self._desenho,
-        x, y,
-        self._cores._cor_borda,
-        self._cores._cor_preenchimento
-     )
 
   def update_fig(self, x, y):#atualizar figura atual
       if self._desenho_atual:
         self._desenho_atual.atualizar(x, y)
-      self._janela.redesenhar(self._model.get_figuras())
+        
+      
+      if self._janela:
+        self._janela.redesenhar(
+          self._model.get_figuras(),
+          self._desenho_atual
+      )
 
   def incluir_newfig (self):#guardar e deixar na tela os desenhos que estao prontos
     if self._desenho_atual:
@@ -58,22 +58,21 @@ class ControladorPrincipal:
        if tipo == 'linha':
           self._cores._cor_borda = cor
        elif tipo == 'fundo':
-          self._cores_cor_preenchimento = cor
+          self._cores._cor_preenchimento = cor
 
   def set_fig(self, forma):
-     self._desenho = forma
-
+    self._desenho = forma
+    self._desenho_atual = None
      
-
   #aciona que funcao deve ser 'chamada' para cada acao
   def notificar(self, acao, valor):
 
     acoes = {
         "selecionar_forma": lambda: self.set_fig(valor),
         "limpar_tela": self.clean_all,
-        "mudar_estilo": lambda: self.mudar_estilo(valor),
-        "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
-        "zoom": lambda: self.zoom(valor),
+        # "mudar_estilo": lambda: self.mudar_estilo(valor),
+        # "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
+        # "zoom": lambda: self.zoom(valor),
         "inicio": lambda: self.iniciar_fig(*valor),
         "arrastar": lambda: self.update_fig(*valor),
         "fim": self.incluir_newfig,
@@ -83,5 +82,7 @@ class ControladorPrincipal:
     funcao = acoes.get(acao)
 
     if funcao:
-        funcao()
+      funcao()
+    else:
+      print(f"Ação desconhecida: {acao}")
   
