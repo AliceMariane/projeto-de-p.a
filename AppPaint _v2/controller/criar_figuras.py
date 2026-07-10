@@ -17,20 +17,20 @@ class  CriarFiguras:
 
         # estrutura----> if desenho == 'n', return a classe N com o que 'n' usa
         
-        if desenho=='Reta':#se a figura for reta
+        if desenho=='reta':#se a figura for reta
             return Reta(x,y,_cor_borda)
         
-        elif desenho=='Retangulo':
+        elif desenho=='retangulo':
             return Retangulo(x,y,_cor_borda,_cor_preenchimento)
         
-        elif desenho=='Circulo':
+        elif desenho=='circulo':
             return Circulo(x,y,_cor_borda, _cor_preenchimento)
         
-        elif desenho=='Elipse':
+        elif desenho=='elipse':
             return Elipse(x,y,_cor_borda, _cor_preenchimento)
         
-        elif desenho=='Quadrado':
+        elif desenho=='quadrado':
             return Quadrado(x,y,_cor_borda, _cor_preenchimento)
         
         else:#desenha a mao livre==rabisco
-            return MaoLivre(x,y)#essa condicional tava entrando em conflito com a classe MaoLivre, inclusive seria interessante transformar esse codigo en dicionario
+            return MaoLivre(x,y, _cor_borda)
