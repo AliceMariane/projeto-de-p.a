@@ -1,8 +1,6 @@
 from tkinter import * 
 from tkinter import ttk
 from tkinter import colorchooser
-from controller.criar_figuras import Reta, Circulo, Elipse, MaoLivre, Retangulo, Quadrado #se me lembrar de ter alterado outras coisas volto aqui (alice)
-#from controlador_principal import incluir_newfig<---------- isso tava causando erro de importacoes circulares, cuidado!!!
 #import os
 #from PIL import Image, ImageTk
 
@@ -37,8 +35,14 @@ class Janela():
     def abrir_paleta(self, tipo):
        cor = colorchooser.askcolor()[1]
        if cor:
-          print (f'Cor escolhida para {tipo}: {cor}')
+          
+          self.notificar_controller('mudar_cor', (tipo, cor))
 
+          if tipo == 'linha':
+             self.btao_cor_linha.config(bg=cor)
+          elif tipo == 'fundo':
+             self.btao_cor_fundo.config(bg=cor)
+             
     def layout(self):
        self.paddings = {'padx': 5, 'pady': 5} 
     
@@ -187,6 +191,9 @@ class Janela():
            figura_atual.desenhar_preview(self.canvas)
 
         
+    
+
+
     
 
 
