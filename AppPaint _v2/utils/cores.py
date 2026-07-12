@@ -2,6 +2,10 @@ from dataclasses import dataclass
 
 @dataclass
 class Cores:
+    '''
+    Armazena as cores atuais
+    '''
+    
     _cor_borda : str = 'black'
     _cor_preenchimento : str = ''
 
@@ -11,7 +15,7 @@ class Cores:
         Retorna a cor da borda.
         '''
 
-        return self._cores.borda
+        return self._cores_borda
      
     @cor_borda.setter
     def cor_borda(self, cor):
@@ -19,7 +23,7 @@ class Cores:
         Atualiza a cor da borda.
         '''
 
-        self._cores.borda = cor
+        self._cores_borda = cor
 
     @property
     def cor_preenchimento(self):
@@ -27,7 +31,7 @@ class Cores:
         Retorna a cor do preenchimento.
         '''
 
-        return self._cores.preenchimento
+        return self._cores_preenchimento
 
     @cor_preenchimento.setter
     def cor_preenchimento(self, cor):
@@ -35,4 +39,4 @@ class Cores:
         Atualiza a cor do preenchimento.
         '''
 
-        self._cores.preenchimento = cor
+        self._cores_preenchimento = cor
