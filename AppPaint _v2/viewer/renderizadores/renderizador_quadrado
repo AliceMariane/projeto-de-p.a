@@ -1,0 +1,32 @@
+from viewer.renderizador import Renderizador
+
+
+class RenderizadorQuadrado(Renderizador):
+    '''
+    Classe responsável por desenhar quadrados.
+    '''
+
+    @staticmethod
+    def desenhar(canvas, quadrado):
+        '''
+        Desenha um quadrado.
+        '''
+
+        canvas.create_rectangle(
+            *quadrado.pontos,
+            outline= quadrado.cor_borda,
+            fill= quadrado.cor_preenchimento
+        )
+
+    @staticmethod
+    def desenhar_preview(canvas, quadrado, dash=(4, 2)):
+        '''
+        Desenha o preview do quadrado.
+        '''
+
+        canvas.create_rectangle(
+            *quadrado.pontos,
+            outline= quadrado.cor_borda,
+            fill= '',
+            dash= dash
+        )
