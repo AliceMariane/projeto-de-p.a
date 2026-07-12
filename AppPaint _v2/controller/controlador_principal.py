@@ -80,6 +80,33 @@ class ControladorPrincipal:
     }
        self._desenho= forma
        self._estado = estados[forma]
+    
+    # adicionando funcao de salvamento e abertura de arquivos
+     def execultar_salvamento(self):
+     caminho_escolhido = self._janela.caminho_salvar()
+       
+     if caminho_escolhido:
+        figuras = self._model.get_figuras()
+        salvador = Paint_arq()
+        sucesso = salvador.salve_arq(caminho_escolhido, figuras)
+        if sucesso:
+           print('Projeto salvo')
+        else:
+           print('ERROR ao salvar')
+          
+  def execultar_abrir(self):
+          caminho_escolhido = self._janela.caminho_abrir()
+   
+          if caminho_escolhido:
+             carregador = Paint_arq()
+             figuras_carregadas = carregador.abrir_arq(caminho_escolhido)
+   
+             if figuras_carregadas is not None:
+                self._model.set_figuras(figuras_carregadas)
+                self._janela.redesenhar(self._model.get_figuras())
+                print('Projeto aberto')
+             else:
+                print('ERROR ao abrir')
      
      
   #aciona que funcao deve ser 'chamada' para cada acao
