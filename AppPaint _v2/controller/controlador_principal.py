@@ -122,6 +122,8 @@ class ControladorPrincipal:
         "arrastar": lambda: self._estado.arrastar(self,event),
         "fim":lambda: self._estado.soltar(self),
         "mudar_cor":lambda: self.set_cor(*valor),
+        "salvar": self.execultar_salvamento,
+        "abrir": self.execultar_abrir
     }
     funcao = acoes.get(acao)
 
