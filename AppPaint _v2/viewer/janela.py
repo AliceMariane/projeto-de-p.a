@@ -108,6 +108,14 @@ class Janela():
       Label(self.f_menu, text= 'Ferramentas',
             bg='#69b0fc', fg='white',
             font=("Arial", 10, "bold")).pack(pady=(15, 5))
+      Button(self.f_menu, text='Abrir Projeto',
+              bg='#4a4a4a', fg='white',
+              relief=FLAT,
+              command=lambda:self.notificar_controller('abrir', None)).pack(fill=X, padx=10, pady=2)
+       Button(self.f_menu, text='Salvar Projeto',
+               bg='#4a4a4a', fg='white',
+                relief=FLAT,
+                 command=lambda: self.notificar_controller("salvar", None)).pack(fill=X, padx=10, pady=2)
       
       Button(self.f_menu, text="Borracha",
             bg="#4a4a4a", fg='white',   
@@ -120,6 +128,22 @@ class Janela():
       self.cb_estilo.pack(fill=X, padx=10,pady=2)
 
       self.cb_estilo.bind('<<ComboboxSelected>>', lambda e :self.notificar_controller("mudar_estilo", self.cb_estilo.get()))
+
+   def caminho_salvar(self):
+       caminho = filedialog.asksaveasfilename(
+          defaultextension='.pkl',
+         filetypes=[("arq paint", "*.pkl"), ("Todos os arquivos", "*.*")],
+         title="Salvar Projeto como"
+       )
+       return caminho
+
+    def caminho_abrir(self):
+       caminho = filedialog.askopenfilename(
+          defaultextension='.pkl',
+          filetypes=[('arq paint', '*.pkl'), ('Todos os arquivos', '*.*')],
+          title='Abrir Projeto'
+        )
+       return caminho
 
    def menu_cores(self):
       Label(self.f_menu,
