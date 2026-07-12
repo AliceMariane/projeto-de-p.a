@@ -4,6 +4,14 @@ from controller.criar_figuras import CriarFiguras
 from dataclasses import dataclass, field
 from model.desenho import Desenho
 from model.figura import Figura
+from controller.estado import Estado
+from controller.estados.estado_reta import EstadoReta
+from controller.estados.estado_circulo import EstadoCirculo
+from controller.estados.estado_retangulo import EstadoRetangulo
+from controller.estados.estado_quadrado import EstadoQuadrado
+from controller.estados.estado_elipse import EstadoElipse
+from controller.estados.estado_maolivre import EstadoMaoLivre
+
 
 #a classe desenho armazena as figuras
 @dataclass
@@ -16,6 +24,7 @@ class ControladorPrincipal:
   _cores: Cores= field(default_factory= Cores) #cores para as figuras
   _janela : Janela| None=None
   _model: Desenho = field(default_factory= Desenho)
+  _estado: Estado= field(default_factory= EstadoReta)#estado padrao
         
   def iniciar_fig(self,x,y): #figura que esta sendo criado pelo usuario
     self._desenho_atual= CriarFiguras.criar(
@@ -61,8 +70,17 @@ class ControladorPrincipal:
           self._cores._cor_preenchimento = cor
 
   def set_fig(self, forma):
-    self._desenho = forma
-    self._desenho_atual = None
+       estados = {
+        "reta": EstadoReta(),
+        "retangulo": EstadoRetangulo(),
+        "circulo": EstadoCirculo(),
+        "quadrado": EstadoQuadrado(),
+        "elipse": EstadoElipse(),
+        "maolivre": EstadoMaoLivre()
+    }
+       self._desenho= forma
+       self._estado = estados[forma]
+     
      
   #aciona que funcao deve ser 'chamada' para cada acao
   def notificar(self, acao, valor):
@@ -73,12 +91,11 @@ class ControladorPrincipal:
         # "mudar_estilo": lambda: self.mudar_estilo(valor),
         # "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
         # "zoom": lambda: self.zoom(valor),
-        "inicio": lambda: self.iniciar_fig(*valor),
-        "arrastar": lambda: self.update_fig(*valor),
-        "fim": self.incluir_newfig,
-        "mudar_cor": lambda: self.set_cor(*valor)
+        "inicio": lambda: self._estado.clicar(self,event),
+        "arrastar": lambda: self._estado.arrastar(self,event),
+        "fim":lambda: self._estado.soltar(self),
+        "mudar_cor":lambda: self.set_cor(*valor),
     }
-
     funcao = acoes.get(acao)
 
     if funcao:
