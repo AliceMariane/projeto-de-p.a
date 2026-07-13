@@ -2,37 +2,31 @@ from viewer.renderizador import Renderizador
 
 
 class RenderizadorCirculo(Renderizador):
+  '''
+  Classe responsável por desenhar círculos.
+  '''
+
+  @staticmethod
+  def desenhar(canvas, circulo, cores):
     '''
-    Classe responsável por desenhar círculos.
+    Desenha um círculo.
     '''
 
-    @staticmethod
-    def desenhar(canvas, circulo):
-        '''
-        Desenha um círculo.
-        '''
+    canvas.create_oval(
+      *circulo.limites,
+      outline= cores.cor_borda,
+      fill= cores.cor_preenchimento
+    )
 
-        canvas.create_oval(
-            circulo.cx - circulo.raio,
-            circulo.cy - circulo.raio,
-            circulo.cx + circulo.raio,
-            circulo.cy + circulo.raio,
-            outline=circulo.cor_borda,
-            fill=circulo.cor_preenchimento
-        )
+  @staticmethod
+  def desenhar_preview(canvas, circulo, cores, dash=(4, 2)):
+    '''
+    Desenha o preview do círculo.
+    '''
 
-    @staticmethod
-    def desenhar_preview(canvas, circulo, dash=(4, 2)):
-        '''
-        Desenha o preview do círculo.
-        '''
-
-        canvas.create_oval(
-            circulo.cx - circulo.raio,
-            circulo.cy - circulo.raio,
-            circulo.cx + circulo.raio,
-            circulo.cy + circulo.raio,
-            outline=circulo.cor_borda,
-            fill='',
-            dash=dash
-        )
+    canvas.create_oval(
+      *circulo.limites,
+      outline= cores.cor_borda,
+      fill= cores.cor_preenchimento,
+      dash= dash
+    )
