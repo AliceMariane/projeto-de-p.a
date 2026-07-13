@@ -4,13 +4,13 @@ from controller.criar_figuras import CriarFiguras
 from dataclasses import dataclass, field
 from model.desenho import Desenho
 from model.figura import Figura
-from controller.estado import Estado
-from controller.estados.estado_reta import EstadoReta
-from controller.estados.estado_circulo import EstadoCirculo
-from controller.estados.estado_retangulo import EstadoRetangulo
-from controller.estados.estado_quadrado import EstadoQuadrado
-from controller.estados.estado_elipse import EstadoElipse
-from controller.estados.estado_maolivre import EstadoMaoLivre
+from .estado import Estado
+from .estados.estado_reta import EstadoReta
+from .estados.estado_circulo import EstadoCirculo
+from .estados.estado_retangulo import EstadoRetangulo
+from .estados.estado_quadrado import EstadoQuadrado
+from .estados.estado_elipse import EstadoElipse
+from .estados.estado_maolivre import EstadoMaoLivre
 
 
 # a classe desenho armazena as figuras
@@ -28,12 +28,13 @@ class ControladorPrincipal:
     self._desenho_atual= CriarFiguras.criar(
                                       self._desenho,
                                       x, y,
-                                      self._cores.cor_borda,
-                                      self._cores.cor_preenchimento
+                                     # self._cores.cor_borda,
+                                     # self._cores.cor_preenchimento
                                     )
     
     if self._desenho_atual is None:
       print(f"Figura '{self._desenho}' não registrada.")
+    
     
   def update_fig(self, x, y): # atualizar figura atual
     if self._desenho_atual:
@@ -78,7 +79,7 @@ class ControladorPrincipal:
     self._desenho= forma
     self._estado = estados[forma]
     
-'''  # adicionando funcao de salvamento e abertura de arquivos
+  '''  # adicionando funcao de salvamento e abertura de arquivos
   def execultar_salvamento(self):
     caminho_escolhido = self._janela.caminho_salvar()
     
@@ -107,24 +108,24 @@ class ControladorPrincipal:
      '''
      
   # aciona qual função deve ser 'chamada' para cada ação
-def notificar(self, acao, valor):
-  acoes = {
-      "selecionar_forma": lambda: self.set_fig(valor),
-      "limpar_tela": self.clean_all,
-      # "mudar_estilo": lambda: self.mudar_estilo(valor),
-      # "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
-      # "zoom": lambda: self.zoom(valor),
-      "inicio": lambda: self._estado.clicar(self.event),
-      "arrastar": lambda: self._estado.arrastar(self.event),
-      "fim": lambda: self._estado.soltar(self),
-      "mudar_cor": lambda: self.set_cor(*valor),
-      "salvar": self.execultar_salvamento,
-      "abrir": self.execultar_abrir
-      }
-  funcao = acoes.get(acao)
+  def notificar(self, acao, valor):
+    acoes = {
+        "selecionar_forma": lambda: self.set_fig(valor),
+        "limpar_tela": self.clean_all,
+        # "mudar_estilo": lambda: self.mudar_estilo(valor),
+        # "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
+        # "zoom": lambda: self.zoom(valor),
+        "inicio": lambda: self._estado.clicar(self, valor),
+        "arrastar": lambda: self._estado.arrastar(self, valor),
+        "fim": lambda: self._estado.soltar(self),
+        "mudar_cor": lambda: self.set_cor(*valor),
+        #"salvar": self.execultar_salvamento,
+        #"abrir": self.execultar_abrir
+        }
+    funcao = acoes.get(acao)
 
-  if funcao:
-    funcao()
-  else:
-    print(f"Ação desconhecida: {acao}")
+    if funcao:
+      funcao()
+    else:
+      print(f"Ação desconhecida: {acao}")
     
