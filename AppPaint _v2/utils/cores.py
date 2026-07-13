@@ -15,7 +15,7 @@ class Cores:
         Retorna a cor da borda.
         '''
 
-        return self._cores_borda
+        return self._cor_borda
      
     @cor_borda.setter
     def cor_borda(self, cor):
@@ -23,7 +23,7 @@ class Cores:
         Atualiza a cor da borda.
         '''
 
-        self._cores_borda = cor
+        self._cor_borda = cor
 
     @property
     def cor_preenchimento(self):
@@ -31,7 +31,7 @@ class Cores:
         Retorna a cor do preenchimento.
         '''
 
-        return self._cores_preenchimento
+        return self._cor_preenchimento
 
     @cor_preenchimento.setter
     def cor_preenchimento(self, cor):
@@ -39,4 +39,4 @@ class Cores:
         Atualiza a cor do preenchimento.
         '''
 
-        self._cores_preenchimento = cor
+        self._cor_preenchimento = cor
