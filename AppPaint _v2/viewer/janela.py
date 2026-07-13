@@ -37,12 +37,15 @@ class Janela:
     # Construir layout
     self.layout()
 
+
   # Metodos temporarios
   def mock_controller(self, acao, valor):
     print(f'Controller acionado: {acao} -> {valor}')
 
+
   def set_cores(self, cores: Cores):
     self._cores = cores
+
 
   # funcao para rodar o codigo
   def btao_icone(self, container, text, nome_icone, command):
@@ -52,6 +55,7 @@ class Janela:
       command=command,
       width=10
     )
+
 
   def abrir_paleta(self, tipo):
     cor = colorchooser.askcolor()[1]
@@ -65,6 +69,7 @@ class Janela:
 
       elif tipo == 'preenchimento':
         self.btao_cor_preenchimento.config(bg=cor)
+
 
   def layout(self):
     self.paddings = {'padx': 5, 'pady': 5}
@@ -104,6 +109,7 @@ class Janela:
     self.menu_ferramentas()
     self.menu_cores()
     self.menu_visualizacao()
+
 
   def menu_formas(self):
 
@@ -156,6 +162,7 @@ class Janela:
       if col_idx > 1:
         col_idx = 0
         row_idx += 1
+
 
   def menu_ferramentas(self):
 
@@ -230,6 +237,7 @@ class Janela:
         )
     )
 
+
   def caminho_salvar(self):
     caminho = filedialog.asksaveasfilename(
       defaultextension='.pkl',
@@ -242,6 +250,7 @@ class Janela:
 
     return caminho
 
+
   def caminho_abrir(self):
     caminho = filedialog.askopenfilename(
       defaultextension='.pkl',
@@ -253,6 +262,7 @@ class Janela:
     )
 
     return caminho
+
 
   def menu_cores(self):
 
@@ -285,6 +295,7 @@ class Janela:
     )
 
     self.btao_cor_preenchimento.pack(fill=X, padx=10, pady=2)
+
 
   def menu_visualizacao(self):
     '''
@@ -332,20 +343,24 @@ class Janela:
         self.notificar_controller('limpar_tela', None)
     ).pack(side=BOTTOM, fill=X, padx=10, pady=20)
 
+ 
   def iniciar_desenho(self, event):
     self.notificar_controller(
       "inicio",
-      (event.x, event.y)
+      (event)
     )
+
 
   def atualizar_desenho(self, event):
     self.notificar_controller(
       "arrastar",
-      (event.x, event.y)
+      (event)
     )
 
+
   def finalizar_desenho(self, event):
-    self.notificar_controller("fim", None)
+    self.notificar_controller("fim",None)
+
 
   def redesenhar(self, figuras_pronta, figura_atual=None):
     self.canvas.delete("all")  # limpa a tela
@@ -370,3 +385,9 @@ class Janela:
         figura_atual,
         self._cores
       )
+
+
+
+#esse codigo ta grande demais e sinto que talvez fosse melhor colocar
+#algumas coisas daqui em uma nova classe, se possivel no futuro para dividir melhor
+#as responsabilidades do view
