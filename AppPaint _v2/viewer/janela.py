@@ -353,14 +353,14 @@ class Janela:
   def iniciar_desenho(self, event):
     self.notificar_controller(
       "inicio",
-      (event)
+      (event.x, event.y)
     )
 
 
   def atualizar_desenho(self, event):
     self.notificar_controller(
       "arrastar",
-      (event)
+      (event.x, event.y)
     )
 
 
