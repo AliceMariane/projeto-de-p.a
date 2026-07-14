@@ -14,8 +14,8 @@ class RenderizadorElipse(Renderizador):
 
     canvas.create_oval(
       *elipse.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento
+      outline= elipse.cor_borda,
+      fill= elipse.cor_preenchimento
     )
 
   @staticmethod
@@ -26,7 +26,7 @@ class RenderizadorElipse(Renderizador):
 
     canvas.create_oval(
       *elipse.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento,
+      outline= elipse.cor_borda,
+      fill= elipse.cor_preenchimento,
       dash= dash
     )
