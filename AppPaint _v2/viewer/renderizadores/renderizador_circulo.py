@@ -14,8 +14,8 @@ class RenderizadorCirculo(Renderizador):
 
     canvas.create_oval(
       *circulo.limites,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento
+      outline= circulo.cor_borda,
+      fill= circulo.cor_preenchimento
     )
 
   @staticmethod
@@ -26,7 +26,7 @@ class RenderizadorCirculo(Renderizador):
 
     canvas.create_oval(
       *circulo.limites,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento,
+      outline= circulo.cor_borda,
+      fill= circulo.cor_preenchimento,
       dash= dash
     )
