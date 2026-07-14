@@ -4,9 +4,10 @@ from abc import ABC, abstractmethod
 
 class Estado(ABC):
 
-  ''' define o comportamento comum das ferramentas
-      quando o usuario interage com o canvas
-  '''
+    ''' 
+    define o comportamento comum das ferramentas
+    quando o usuario interage com o canvas
+    '''
     
     @abstractmethod
     def clicar (self, controlador_principal,event):
