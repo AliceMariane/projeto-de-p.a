@@ -16,6 +16,9 @@ class Quadrado(Figura):
   _ini_x: int
   _ini_y: int
 
+  cor_borda: str ='black'
+  cor_preenchimento: str = 'white'
+
   # Segundo Vértice (x, y)
   _fim_x: int = field(init=False)
   _fim_y: int = field(init=False)
