@@ -1,5 +1,7 @@
 from controller.estado import Estado
+from dataclasses import dataclass
 
+@dataclass
 class EstadoSelecionar(Estado):
     
     """
@@ -7,12 +9,12 @@ class EstadoSelecionar(Estado):
     as figuras (para, por exemplo:arrastar, copiar,         sobrepor)
     
     """
-    def __init__(self, desenho):
-        self.desenho = desenho
-        self.figura_selecionada = None
-        self.last_x = 0
-        self.last_y = 0
-        
+    
+    #desenho: desenho = desenho
+    figura_selecionada = None
+    
+    last_x: int = 0
+    last_y: int = 0
        
     def clicar (self, x, y):
         self.figura_selecionada= self.desenho.buscar_figura(x,y)
@@ -42,3 +44,19 @@ class EstadoSelecionar(Estado):
     def soltar (self, x, y):
         pass
       
+    def copiar(self):
+        self.controlador.clipboard = self.figura_selecionada.clone() # clipboard== area de transferencia
+        
+    def colar(self):
+        
+        nova_copia = self.controlador.clipboard.clone()
+        self.controlador.model.adicionar(nova_copia)
+        
+    def trazer_para_frente(self):
+        self.controlador.model.trazer_para_frente (self.figura_selecionada)
+        
+    def jogar_para_tras(self):
+        self.controlador.model.jogar_para_tras (self.figura_selecionada)
+        
+    def apagar (self):
+        ...
