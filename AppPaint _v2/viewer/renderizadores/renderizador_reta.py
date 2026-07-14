@@ -14,7 +14,7 @@ class RenderizadorReta(Renderizador):
 
     canvas.create_line(
       *reta.pontos,
-      fill= cores.cor_borda
+      fill= reta.cor_borda
     )
 
   @staticmethod
@@ -25,6 +25,6 @@ class RenderizadorReta(Renderizador):
 
     canvas.create_line(
       *reta.pontos,
-      fill= cores.cor_borda,
+      fill= reta.cor_borda,
       dash= dash
     )
