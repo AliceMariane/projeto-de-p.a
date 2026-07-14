@@ -15,6 +15,9 @@ class Circulo(Figura):
   _cx: int
   _cy: int
 
+  cor_borda: str ='black'
+  cor_preenchimento: str = 'white'
+
   _raio: float = field(init=False)
 
   def __post_init__(self):
