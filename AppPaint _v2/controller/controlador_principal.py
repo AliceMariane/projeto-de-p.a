@@ -1,17 +1,13 @@
 from utils.cores import Cores
+from utils.arquivos import Paint_arq
 from viewer.janela import Janela
 from controller.criar_figuras import CriarFiguras
 from dataclasses import dataclass, field
 from model.desenho import Desenho
 from model.figura import Figura
 from controller.estado import Estado
-from controller.estados.estado_reta import EstadoReta
-from controller.estados.estado_circulo import EstadoCirculo
-from controller.estados.estado_retangulo import EstadoRetangulo
-from controller.estados.estado_quadrado import EstadoQuadrado
-from controller.estados.estado_elipse import EstadoElipse
+from controller.estados.estado_formas import EstadoFormas
 from controller.estados.estado_maolivre import EstadoMaoLivre
-from utils.salvar_png import SalvarPNG
 
 
 # a classe desenho armazena as figuras
@@ -23,21 +19,18 @@ class ControladorPrincipal:
   _cores : Cores = field(default_factory= Cores) # cores para as figuras
   _janela : Janela | None=None
   _model: Desenho = field(default_factory= Desenho)
-  _estado: Estado = field(default_factory= EstadoReta) # estado padrão
+  _estado: Estado = field(default_factory= EstadoFormas) # estado padrão
         
-  def iniciar_fig(self,x,y): # figura que está sendo criado pelo usuário
+  def iniciar_fig(self,x,y): 
     self._desenho_atual= CriarFiguras.criar(
                                       self._desenho,
                                       x, y,
-                                     # self._cores.cor_borda,
-                                     # self._cores.cor_preenchimento
+                                      self._cores.cor_borda,
+                                      self._cores.cor_preenchimento
                                     )
     
-    if self._desenho_atual is None:
-      print(f"Figura '{self._desenho}' não registrada.")
-    
-    
-  def update_fig(self, x, y): # atualizar figura atual
+  
+  def update_fig(self, x, y): 
     if self._desenho_atual:
       self._desenho_atual.atualizar(x, y)
       
@@ -46,13 +39,16 @@ class ControladorPrincipal:
         self._model.get_figuras(),
         self._desenho_atual
     )
+    
 
-  def incluir_newfig (self): # guardar e deixar na tela os desenhos que estao prontos
+  def incluir_newfig (self): 
     if self._desenho_atual:
       self._model.adicionar(self._desenho_atual)
       self._desenho_atual = None
+     
+    if self._janela:
+      self._janela.redesenhar(self._model.get_figuras())
 
-    self._janela.redesenhar(self._model.get_figuras())
 
   def clean_all(self): # manda apagar todos desenhos da tela
     self._model.clear()
@@ -68,29 +64,30 @@ class ControladorPrincipal:
       self._cores.cor_preenchimento = cor
 
   def set_fig(self, forma):
+    estado_generico = EstadoFormas()
     estados = {
-    "reta": EstadoReta(),
-    "retangulo": EstadoRetangulo(),
-    "circulo": EstadoCirculo(),
-    "quadrado": EstadoQuadrado(),
-    "elipse": EstadoElipse(),
+    "reta": estado_generico,
+    "retangulo": estado_generico,
+    "circulo": estado_generico,
+    "quadrado": estado_generico,
+    "elipse": estado_generico,
     "maolivre": EstadoMaoLivre()
     }
     
     self._desenho= forma
     self._estado = estados[forma]
     
-  '''  # adicionando funcao de salvamento e abertura de arquivos
+    # adicionando funcao de salvamento e abertura de arquivos
   def execultar_salvamento(self):
     caminho_escolhido = self._janela.caminho_salvar()
     
-  if caminho_escolhido:
-    figuras = self._model.get_figuras()
-    salvador = Paint_arq()
-    sucesso = salvador.salve_arq(caminho_escolhido, figuras)
-    if sucesso:
+    if caminho_escolhido:
+      figuras = self._model.get_figuras()
+      salvador = Paint_arq()
+      sucesso = salvador.salve_arq(caminho_escolhido, figuras)
+      if sucesso:
         print('Projeto salvo')
-    else:
+      else:
         print('ERROR ao salvar')
           
   def execultar_abrir(self):
@@ -106,7 +103,7 @@ class ControladorPrincipal:
           print('Projeto aberto')
         else:
           print('ERROR ao abrir')
-     '''
+     
      
   # aciona qual função deve ser 'chamada' para cada ação
   def notificar(self, acao, valor):
@@ -116,11 +113,12 @@ class ControladorPrincipal:
         # "mudar_estilo": lambda: self.mudar_estilo(valor),
         # "selecionar_ferramenta": lambda: self.selecionar_ferramenta(valor),
         # "zoom": lambda: self.zoom(valor),
-        "inicio": lambda: self._estado.clicar(self, valor),
-        "arrastar": lambda: self._estado.arrastar(self, valor),
-        "fim": lambda: self._estado.soltar(self),
+        "inicio": lambda: self.iniciar_fig(valor[0], valor[1]),
+        "arrastar": lambda: self.update_fig(valor[0], valor[1]),
+        "fim": lambda: self.incluir_newfig(),
         "mudar_cor": lambda: self.set_cor(*valor),
-        "exportar_png": lambda: self.exportar_png(),
+        "salvar": self.execultar_salvamento,
+        "abrir": self.execultar_abrir
         }
     funcao = acoes.get(acao)
 
@@ -129,19 +127,3 @@ class ControladorPrincipal:
     else:
       print(f"Ação desconhecida: {acao}")
     
-    
-  #salvar imagem
-  def exportar_png(self):
-
-    caminho = self._janela.caminho_salvar_png()
-
-    if caminho:
-
-        exportador = SalvarPNG()
-
-        exportador.salvar(
-            caminho,
-            self._model.get_figuras(),
-            self._cores
-        )  
-
