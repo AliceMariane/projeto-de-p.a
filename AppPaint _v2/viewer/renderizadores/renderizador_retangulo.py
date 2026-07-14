@@ -1,32 +1,30 @@
 from viewer.renderizador import Renderizador
 
 
-class RenderizadorRetangulo(Renderizador):
+class RenderizadorReta(Renderizador):
   '''
-  Classe responsável por desenhar retângulos.
+  Responsável por desenhar retas.
   '''
 
   @staticmethod
-  def desenhar(canvas, retangulo, cores):
+  def desenhar(canvas, reta, cores):
     '''
-    Desenha um retângulo.
+    Desenha a reta.
     '''
 
-    canvas.create_rectangle(
-      *retangulo.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento
+    canvas.create_line(
+      *reta.pontos,
+      fill= reta.cor_borda
     )
 
   @staticmethod
-  def desenhar_preview(canvas, retangulo, cores, dash=(4, 2)):
+  def desenhar_preview(canvas, reta, cores, dash=(4, 2)):
     '''
-    Desenha o preview do retângulo.
+    Desenha o preview da reta.
     '''
 
-    canvas.create_rectangle(
-      *retangulo.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento,
+    canvas.create_line(
+      *reta.pontos,
+      fill= reta.cor_borda,
       dash= dash
     )
