@@ -14,7 +14,7 @@ class CriarFiguras:
   '''
 
   @staticmethod
-  def criar(desenho, x, y):
+  def criar(desenho, x, y, cor_borda="black", cor_preenchimento="white"):
     '''
     Cria uma nova figura.
     '''
@@ -30,8 +30,10 @@ class CriarFiguras:
       'maolivre': MaoLivre,
     }
 
-    classe_fig = mapa_fig.get(desenho, MaoLivre)
+    classe_fig = mapa_fig.get(desenho)
 
-    nova_fig = classe_fig(x, y)
+    if classe_fig:
+      return classe_fig(x, y, cor_borda, cor_preenchimento)
+
     
-    return nova_fig
+    return None
