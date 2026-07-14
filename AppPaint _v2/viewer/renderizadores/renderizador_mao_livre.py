@@ -14,9 +14,10 @@ class RenderizadorMaoLivre(Renderizador):
     '''
 
     canvas.create_line(
-      figura.pontos,
-      fill= cores.cor_borda,
-      smooth= True
+      *figura.pontos,
+      fill= figura.cor_borda,
+      smooth= True,
+      width=2
     )
 
   @staticmethod
@@ -26,7 +27,8 @@ class RenderizadorMaoLivre(Renderizador):
     '''
 
     canvas.create_line(
-      figura.pontos,
-      fill= cores.cor_borda,
-      smooth= True
+      *figura.pontos,
+      fill= figura.cor_borda,
+      smooth= True,
+      width=2
     )
