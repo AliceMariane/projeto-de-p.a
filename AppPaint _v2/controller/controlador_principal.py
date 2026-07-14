@@ -4,13 +4,13 @@ from controller.criar_figuras import CriarFiguras
 from dataclasses import dataclass, field
 from model.desenho import Desenho
 from model.figura import Figura
-from .estado import Estado
-from .estados.estado_reta import EstadoReta
-from .estados.estado_circulo import EstadoCirculo
-from .estados.estado_retangulo import EstadoRetangulo
-from .estados.estado_quadrado import EstadoQuadrado
-from .estados.estado_elipse import EstadoElipse
-from .estados.estado_maolivre import EstadoMaoLivre
+from controller.estado import Estado
+from controller.estados.estado_reta import EstadoReta
+from controller.estados.estado_circulo import EstadoCirculo
+from controller.estados.estado_retangulo import EstadoRetangulo
+from controller.estados.estado_quadrado import EstadoQuadrado
+from controller.estados.estado_elipse import EstadoElipse
+from controller.estados.estado_maolivre import EstadoMaoLivre
 
 
 # a classe desenho armazena as figuras
