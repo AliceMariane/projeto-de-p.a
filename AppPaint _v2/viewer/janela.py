@@ -332,7 +332,13 @@ class Janela:
         self.notificar_controller('zoom', 'out')
     ).pack(side=RIGHT, expand=True, padx=(2, 0))
     '''
-
+    Button(
+      self.f_menu,
+      text="Exportar PNG",
+      command=lambda:
+          self.notificar_controller("exportar_png", None)
+    ).pack(fill=X, padx=10, pady=2)
+    
     Button(
       self.f_menu,
       text="Limpar Tela",
@@ -385,8 +391,14 @@ class Janela:
         figura_atual,
         self._cores
       )
+  
 
+  def caminho_salvar_png(self):
 
+    return filedialog.asksaveasfilename(
+        defaultextension=".png",
+        filetypes=[("Imagem PNG", "*.png")]
+    )
 
 #esse codigo ta grande demais e sinto que talvez fosse melhor colocar
 #algumas coisas daqui em uma nova classe, se possivel 
