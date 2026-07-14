@@ -17,7 +17,7 @@ class Janela:
 
   def __init__(self, controller_callback=None):
     self.root = Tk()
-    self.root.title("Paint CAR")
+    self.root.title("𓂃Paint𓂃🖌")
     self.root.geometry("720x1080")
 
     # Controle de erros
@@ -78,7 +78,7 @@ class Janela:
     self.f_menu = Frame(
       self.root,
       bg="#2b2b2b",
-      width=150,
+      width=230,
       relief=RAISED,
       bd=2
     )
@@ -90,7 +90,7 @@ class Janela:
     self.canvas = Canvas(
       self.root,
       bg="white",
-      cursor="crosshair"
+      cursor="pencil"
     )
 
     self.canvas.pack(
@@ -115,15 +115,15 @@ class Janela:
 
     Label(
       self.f_menu,
-      text='Formas',
-      bg="#69b0fc",
+      text='╰⌲Formas',
+      bg="#2B2D31",
       fg="white",
       font=("Arial", 10, "bold")
-    ).pack(pady=(15, 5))
+    ).pack(pady=(20, 8))
 
     f_grid = Frame(
       self.f_menu,
-      bg="#69b0fc"
+      bg="#2B2D31"
     )
 
     f_grid.pack()
@@ -154,7 +154,7 @@ class Janela:
         row=row_idx,
         column=col_idx,
         padx=2,
-        pady=2
+        pady=5
       )
 
       col_idx += 1
@@ -168,36 +168,36 @@ class Janela:
 
     Label(
       self.f_menu,
-      text='Ferramentas',
-      bg='#69b0fc',
+      text='╰⌲Ferramentas',
+      bg='#2B2D31',
       fg='white',
       font=("Arial", 10, "bold")
-    ).pack(pady=(15, 5))
+    ).pack(pady=(20, 8))
 
     Button(
       self.f_menu,
       text='Abrir Projeto',
-      bg='#4a4a4a',
+      bg='#3A3D41',
       fg='white',
       relief=FLAT,
       command=lambda:
         self.notificar_controller('abrir', None)
-    ).pack(fill=X, padx=10, pady=2)
+    ).pack(fill=X, padx=10, pady=4)
 
     Button(
       self.f_menu,
       text='Salvar Projeto',
-      bg='#4a4a4a',
+      bg='#3A3D41',
       fg='white',
       relief=FLAT,
       command=lambda:
         self.notificar_controller('salvar', None)
-    ).pack(fill=X, padx=10, pady=2)
+    ).pack(fill=X, padx=10, pady=4)
 
     Button(
       self.f_menu,
       text="Borracha",
-      bg="#4a4a4a",
+      bg="#3A3D41",
       fg='white',
       relief=FLAT,
       command=lambda:
@@ -205,12 +205,12 @@ class Janela:
           'selecionar_ferramenta',
           'borracha'
         )
-    ).pack(fill=X, padx=10, pady=2)
+    ).pack(fill=X, padx=10, pady=4)
 
     Label(
       self.f_menu,
       text="Estilo do Traço:",
-      bg="#69b0fc",
+      bg="#2B2D31",
       fg='gray',
       font=('Arial', 8)
     ).pack(anchor=W, padx=10)
@@ -226,7 +226,7 @@ class Janela:
     )
 
     self.cb_estilo.current(0)
-    self.cb_estilo.pack(fill=X, padx=10, pady=2)
+    self.cb_estilo.pack(fill=X, padx=10, pady=4)
 
     self.cb_estilo.bind(
       '<<ComboboxSelected>>',
@@ -268,33 +268,33 @@ class Janela:
 
     Label(
       self.f_menu,
-      text="CORES",
-      bg="#69b0fc",
+      text="╰⌲CORES",
+      bg="#2B2D31",
       fg='white',
       font=("Arial", 10, "bold")
-    ).pack(pady=(15, 5))
+    ).pack(pady=(20, 8))
 
     self.btao_cor_borda = Button(
       self.f_menu,
       text='Cor da borda',
-      bg=self.cor_borda,
+      bg='black',
       fg='white',
       relief=FLAT,
       command=lambda: self.abrir_paleta("borda")
     )
 
-    self.btao_cor_borda.pack(fill=X, padx=10, pady=2)
+    self.btao_cor_borda.pack(fill=X, padx=10, pady=4)
 
     self.btao_cor_preenchimento = Button(
       self.f_menu,
-      text='Cor do preenchimento',
-      bg='white',
-      fg='black',
+      text='preenchimento',
+      bg='black',
+      fg='white',
       relief=FLAT,
       command=lambda: self.abrir_paleta('preenchimento')
     )
 
-    self.btao_cor_preenchimento.pack(fill=X, padx=10, pady=2)
+    self.btao_cor_preenchimento.pack(fill=X, padx=10, pady=4)
 
 
   def menu_visualizacao(self):
@@ -389,5 +389,4 @@ class Janela:
 
 
 #esse codigo ta grande demais e sinto que talvez fosse melhor colocar
-#algumas coisas daqui em uma nova classe, se possivel no futuro para dividir melhor
-#as responsabilidades do view
+#algumas coisas daqui em uma nova classe, se possivel 
