@@ -10,3 +10,7 @@ class Desenho:
 
     def clear(self):#limpa figuras
         self.figuras.clear()
+
+    def set_figuras(self, new_fig):
+        self.figuras.clear()
+        self.figuras.extend(new_fig)
