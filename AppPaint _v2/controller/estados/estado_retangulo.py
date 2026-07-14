@@ -1,4 +1,4 @@
-from .estado import Estado
+from controller.estado import Estado
 
 
 class EstadoRetangulo (Estado):
