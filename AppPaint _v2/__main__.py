@@ -7,7 +7,6 @@ if __name__ == "__main__":
     controller = ControladorPrincipal(_janela=app) # era algo bobo, apenas um erro ortografico que ocorreu
 
     app.notificar_controller = controller.notificar
-
     app.set_cores(controller._cores)
 
     app.root.mainloop()
