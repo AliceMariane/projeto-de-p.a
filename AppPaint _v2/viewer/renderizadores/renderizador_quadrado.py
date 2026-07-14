@@ -14,8 +14,8 @@ class RenderizadorQuadrado(Renderizador):
 
     canvas.create_rectangle(
       *quadrado.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento
+      outline= quadrado.cor_borda,
+      fill= quadrado.cor_preenchimento
     )
 
   @staticmethod
@@ -26,7 +26,7 @@ class RenderizadorQuadrado(Renderizador):
 
     canvas.create_rectangle(
       *quadrado.pontos,
-      outline= cores.cor_borda,
-      fill= cores.cor_preenchimento,
+      outline= quadrado.cor_borda,
+      fill= quadrado.cor_preenchimento,
       dash= dash
     )
