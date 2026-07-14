@@ -1,4 +1,4 @@
-from .estado import Estado
+from controller.estado import Estado
 
 
 class EstadoMaoLivre(Estado):
@@ -14,5 +14,5 @@ class EstadoMaoLivre(Estado):
         controlador_principal.update_fig(event.x, event.y)
     
     
-    def soltar (self, controlador_principal, event):
+    def soltar (self, controlador_principal):
         controlador_principal.incluir_newfig()
