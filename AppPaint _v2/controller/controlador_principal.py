@@ -8,6 +8,7 @@ from model.figura import Figura
 from controller.estado import Estado
 from controller.estados.estado_formas import EstadoFormas
 from controller.estados.estado_maolivre import EstadoMaoLivre
+from controller.estados.estado_selecionar import EstadoSelecionar
 
 
 # a classe desenho armazena as figuras
@@ -20,6 +21,7 @@ class ControladorPrincipal:
   _janela : Janela | None=None
   _model: Desenho = field(default_factory= Desenho)
   _estado: Estado = field(default_factory= EstadoFormas) # estado padrão
+
         
   def iniciar_fig(self,x,y): 
     self._desenho_atual= CriarFiguras.criar(
@@ -71,7 +73,8 @@ class ControladorPrincipal:
     "circulo": estado_generico,
     "quadrado": estado_generico,
     "elipse": estado_generico,
-    "maolivre": EstadoMaoLivre()
+    "maolivre": EstadoMaoLivre(),
+    "selecionar": EstadoSelecionar()
     }
     
     self._desenho= forma
@@ -107,6 +110,8 @@ class ControladorPrincipal:
      
   # aciona qual função deve ser 'chamada' para cada ação
   def notificar(self, acao, valor):
+    # teste---> print('recebi: ', acao)
+    self._estado= EstadoSelecionar
     acoes = {
         "selecionar_forma": lambda: self.set_fig(valor),
         "limpar_tela": self.clean_all,
@@ -118,12 +123,17 @@ class ControladorPrincipal:
         "fim": lambda: self.incluir_newfig(),
         "mudar_cor": lambda: self.set_cor(*valor),
         "salvar": self.execultar_salvamento,
-        "abrir": self.execultar_abrir
+        "abrir":  self.execultar_abrir,
+        'frente': lambda: self._estado.trazer_para_frente(),
+        'tras': lambda: self._estado.jogar_para_tras(),
+        'copiar': lambda: self._estado.copiar_figura(),
+        'colar': lambda: self._estado.colar_figura(),
+        'apagar': None # no momento nao sei como vai funcionar
         }
     funcao = acoes.get(acao)
-
+    # teste---> print('funcao: ', funcao)
     if funcao:
       funcao()
     else:
       print(f"Ação desconhecida: {acao}")
-    
+      
