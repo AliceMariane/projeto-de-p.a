@@ -60,10 +60,10 @@ class ControladorPrincipal:
 
 # função cores 
   def set_cor(self, tipo, cor):
-    if tipo == 'linha':
+    if tipo == 'borda':
       self._cores.cor_borda = cor
       
-    elif tipo == 'fundo':
+    elif tipo == 'preenchimento':
       self._cores.cor_preenchimento = cor
 
   def set_fig(self, forma):
