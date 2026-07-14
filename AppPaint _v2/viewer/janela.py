@@ -33,8 +33,9 @@ class Janela:
 
     # Referência para as cores do controlador
     self._cores: Cores | None = None
-
+    
     # Construir layout
+    self.barra_menu()
     self.layout()
 
 
@@ -104,22 +105,25 @@ class Janela:
     self.canvas.bind("<B1-Motion>", self.atualizar_desenho)
     self.canvas.bind("<ButtonRelease-1>", self.finalizar_desenho)
 
+    # eventos de menu do botao direito do mouse
+    self.canvas.bind("<Button-3>", self.menu_contexto)
+    
     # Separação do f_main(Menu principal)
     self.menu_formas()
     self.menu_ferramentas()
     self.menu_cores()
     self.menu_visualizacao()
 
-
+  
   def menu_formas(self):
 
-    Label(
+    '''Label(
       self.f_menu,
       text='╰⌲Formas',
       bg="#2B2D31",
       fg="white",
       font=("Arial", 10, "bold")
-    ).pack(pady=(20, 8))
+    ).pack(pady=(20, 8))'''
 
     f_grid = Frame(
       self.f_menu,
@@ -150,50 +154,23 @@ class Janela:
           self.notificar_controller('selecionar_forma', f)
       )
 
-      btao.grid(
+      '''btao.grid(
         row=row_idx,
         column=col_idx,
         padx=2,
         pady=5
-      )
+      )'''
 
       col_idx += 1
 
       if col_idx > 1:
         col_idx = 0
         row_idx += 1
-
+    
 
   def menu_ferramentas(self):
 
-    Label(
-      self.f_menu,
-      text='╰⌲Ferramentas',
-      bg='#2B2D31',
-      fg='white',
-      font=("Arial", 10, "bold")
-    ).pack(pady=(20, 8))
-
-    Button(
-      self.f_menu,
-      text='Abrir Projeto',
-      bg='#3A3D41',
-      fg='white',
-      relief=FLAT,
-      command=lambda:
-        self.notificar_controller('abrir', None)
-    ).pack(fill=X, padx=10, pady=4)
-
-    Button(
-      self.f_menu,
-      text='Salvar Projeto',
-      bg='#3A3D41',
-      fg='white',
-      relief=FLAT,
-      command=lambda:
-        self.notificar_controller('salvar', None)
-    ).pack(fill=X, padx=10, pady=4)
-
+   
     Button(
       self.f_menu,
       text="Borracha",
@@ -298,47 +275,7 @@ class Janela:
 
 
   def menu_visualizacao(self):
-    '''
-    Label(
-      self.f_menu,
-      text='VISUALIZAÇÃO',
-      bg='#69b0fc',
-      fg='white',
-      font=('Arial', 10, 'bold')
-    ).pack(pady=(15, 5))
 
-    f_zoom = Frame(self.f_menu, bg="#69b0fc")
-    f_zoom.pack(fill=X, padx=10)
-
-    Button(
-      f_zoom,
-      text="Zoom + ",
-      bg="#4a4a4a",
-      fg='white',
-      relief=FLAT,
-      width=7,
-      command=lambda:
-        self.notificar_controller('zoom', 'in')
-    ).pack(side=LEFT, expand=True, padx=(0, 2))
-
-    Button(
-      f_zoom,
-      text="Zoom - ",
-      bg="#4a4a4a",
-      fg='white',
-      relief=FLAT,
-      width=7,
-      command=lambda:
-        self.notificar_controller('zoom', 'out')
-    ).pack(side=RIGHT, expand=True, padx=(2, 0))
-    '''
-    Button(
-      self.f_menu,
-      text="Exportar PNG",
-      command=lambda:
-          self.notificar_controller("exportar_png", None)
-    ).pack(fill=X, padx=10, pady=2)
-    
     Button(
       self.f_menu,
       text="Limpar Tela",
@@ -400,5 +337,101 @@ class Janela:
         filetypes=[("Imagem PNG", "*.png")]
     )
 
-#esse codigo ta grande demais e sinto que talvez fosse melhor colocar
-#algumas coisas daqui em uma nova classe, se possivel 
+
+
+
+  def barra_menu (self): # menu do botão direito do mouse
+      barra_menu = Menu(self.root)
+
+      # Arquivo
+      menu_arquivo = Menu(barra_menu, tearoff=0)
+      menu_arquivo.add_command(
+          label="Abrir Projeto",
+          command=lambda: self.notificar_controller("abrir", None)
+      )
+      menu_arquivo.add_command(
+          label="Salvar Projeto",
+          command=lambda: self.notificar_controller("salvar", None)
+      )
+      menu_arquivo.add_separator()
+      menu_arquivo.add_command(
+          label="Sair",
+          command=self.root.quit
+      )
+      barra_menu.add_cascade(label="Arquivo", menu=menu_arquivo)
+
+      # Formas
+      menu_formas = Menu(barra_menu, tearoff=0)
+
+      formas = [
+          ("Reta", "reta"),
+          ("Mão Livre", "maolivre"),
+          ("Círculo", "circulo"),
+          ("Retângulo", "retangulo"),
+          ("Quadrado", "quadrado"),
+          ("Elipse", "elipse"),
+      ]
+
+      for nome, ident in formas:
+          menu_formas.add_command(
+              label=nome,
+              command=lambda f=ident:
+                  self.notificar_controller("selecionar_forma", f)
+          )
+
+      barra_menu.add_cascade(label="Formas", menu=menu_formas)
+
+
+      # Sobre
+      menu_sobre = Menu(barra_menu, tearoff=0)
+      menu_sobre.add_command(
+          label="Sobre",
+          command=lambda: print("teste")
+      )
+
+      barra_menu.add_cascade(label="Sobre", menu=menu_sobre)
+
+      self.root.config(menu=barra_menu)
+      
+      
+  def menu_contexto(self, event):
+
+    menu = Menu(self.root, tearoff=0)
+
+    menu.add_command(
+        label="Copiar",
+        command=lambda:
+            self.notificar_controller("copiar", None)
+    )
+
+    menu.add_command(
+        label="Colar",
+        command=lambda:
+            self.notificar_controller("colar", None)
+    )
+
+    menu.add_separator()
+
+    menu.add_command(
+        label="Trazer para frente",
+        command=lambda:
+            self.notificar_controller("frente", None)
+    )
+
+    menu.add_command(
+        label="Enviar para trás",
+        command=lambda:
+            self.notificar_controller("tras", None)
+    )
+
+    menu.add_separator()
+
+    menu.add_command(
+        label="Apagar",
+        command=lambda:
+            self.notificar_controller("apagar", None)
+    )
+
+    # exibe o menu na tela na posição que o mouse clicou
+    menu.tk_popup(event.x_root, event.y_root) # ao inves de funcionar apenas no canvas funciona em toda a tela do paint o comando
+    
