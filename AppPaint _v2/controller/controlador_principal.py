@@ -11,6 +11,7 @@ from controller.estados.estado_retangulo import EstadoRetangulo
 from controller.estados.estado_quadrado import EstadoQuadrado
 from controller.estados.estado_elipse import EstadoElipse
 from controller.estados.estado_maolivre import EstadoMaoLivre
+from utils.salvar_png import SalvarPNG
 
 
 # a classe desenho armazena as figuras
@@ -119,8 +120,7 @@ class ControladorPrincipal:
         "arrastar": lambda: self._estado.arrastar(self, valor),
         "fim": lambda: self._estado.soltar(self),
         "mudar_cor": lambda: self.set_cor(*valor),
-        #"salvar": self.execultar_salvamento,
-        #"abrir": self.execultar_abrir
+        "exportar_png": lambda: self.exportar_png(),
         }
     funcao = acoes.get(acao)
 
@@ -129,3 +129,19 @@ class ControladorPrincipal:
     else:
       print(f"Ação desconhecida: {acao}")
     
+    
+  #salvar imagem
+  def exportar_png(self):
+
+    caminho = self._janela.caminho_salvar_png()
+
+    if caminho:
+
+        exportador = SalvarPNG()
+
+        exportador.salvar(
+            caminho,
+            self._model.get_figuras(),
+            self._cores
+        )  
+
