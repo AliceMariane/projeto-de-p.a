@@ -1,6 +1,7 @@
 from controller.estado import Estado
 from dataclasses import dataclass
 
+
 @dataclass
 class EstadoSelecionar(Estado):
     
@@ -17,8 +18,9 @@ class EstadoSelecionar(Estado):
     last_y: int = 0
        
     def clicar (self, x, y):
+        print('cliquei ', x, y)
         self.figura_selecionada= self.desenho.buscar_figura(x,y)
-        
+        print('selecionei ', self.figura_selecionada)
         self.ultimo_x = x
         self.ultimo_y = y   
                        # buscar_figura é uma funcao que  
@@ -44,14 +46,6 @@ class EstadoSelecionar(Estado):
     def soltar (self, x, y):
         pass
       
-    def copiar(self):
-        self.controlador.clipboard = self.figura_selecionada.clone() # clipboard== area de transferencia
-        
-    def colar(self):
-        
-        nova_copia = self.controlador.clipboard.clone()
-        self.controlador.model.adicionar(nova_copia)
-        
     def trazer_para_frente(self):
         self.controlador.model.trazer_para_frente (self.figura_selecionada)
         
@@ -59,4 +53,4 @@ class EstadoSelecionar(Estado):
         self.controlador.model.jogar_para_tras (self.figura_selecionada)
         
     def apagar (self):
-        ...
+        self.controlador.model.apagar (self.figura_selecionada)
