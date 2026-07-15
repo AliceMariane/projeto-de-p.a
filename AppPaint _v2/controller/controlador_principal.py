@@ -9,6 +9,7 @@ from controller.estado import Estado
 from controller.estados.estado_formas import EstadoFormas
 from controller.estados.estado_maolivre import EstadoMaoLivre
 from controller.estados.estado_selecionar import EstadoSelecionar
+import copy
 
 
 # a classe desenho armazena as figuras
@@ -21,7 +22,8 @@ class ControladorPrincipal:
   _janela : Janela | None=None
   _model: Desenho = field(default_factory= Desenho)
   _estado: Estado = field(default_factory= EstadoFormas) # estado padrão
-
+  _clipboard: Figura | None=None
+  _selecionar: EstadoSelecionar = field(default_factory= EstadoSelecionar)
         
   def iniciar_fig(self,x,y): 
     self._desenho_atual= CriarFiguras.criar(
@@ -107,6 +109,21 @@ class ControladorPrincipal:
         else:
           print('ERROR ao abrir')
      
+  def copiar(self):
+    if self.figura_selecionada: 
+      print(self.figura_selecionada)
+      self.controlador._clipboard = copy.deepcopy(self._selecionar.figura_selecionada) # clipboard== area de transferencia
+      print('copiando')
+        
+  def colar(self):
+    if self.controlador._clipboard:
+      nova_copia = copy.deepcopy(self._clipboard)
+      nova_copia.mover(30,30)
+      self._model.adicionar(nova_copia)
+      self._janela.redesenhar(self._model.get_figuras())
+        
+      print('colando')
+        
      
   # aciona qual função deve ser 'chamada' para cada ação
   def notificar(self, acao, valor):
@@ -124,11 +141,11 @@ class ControladorPrincipal:
         "mudar_cor": lambda: self.set_cor(*valor),
         "salvar": self.execultar_salvamento,
         "abrir":  self.execultar_abrir,
-        'frente': lambda: self._estado.trazer_para_frente(),
-        'tras': lambda: self._estado.jogar_para_tras(),
-        'copiar': lambda: self._estado.copiar_figura(),
-        'colar': lambda: self._estado.colar_figura(),
-        'apagar': None # no momento nao sei como vai funcionar
+        'frente': lambda: self._selecionar.trazer_para_frente(),
+        'tras': lambda: self._selecionar.jogar_para_tras(),
+        'copiar': lambda: self.copiar,
+        'colar': lambda: self.colar,
+        'apagar': lambda: self._selecionar.apagar()
         }
     funcao = acoes.get(acao)
     # teste---> print('funcao: ', funcao)
@@ -137,3 +154,6 @@ class ControladorPrincipal:
     else:
       print(f"Ação desconhecida: {acao}")
       
+    
+      
+    
