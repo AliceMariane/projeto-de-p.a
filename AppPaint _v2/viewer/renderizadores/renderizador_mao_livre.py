@@ -17,7 +17,7 @@ class RenderizadorMaoLivre(Renderizador):
       *figura.pontos,
       fill= figura.cor_borda,
       smooth= True,
-      width=2
+      width= 1
     )
 
   @staticmethod
@@ -30,5 +30,5 @@ class RenderizadorMaoLivre(Renderizador):
       *figura.pontos,
       fill= figura.cor_borda,
       smooth= True,
-      width=2
+      width= 1
     )
