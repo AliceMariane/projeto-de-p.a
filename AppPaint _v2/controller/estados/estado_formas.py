@@ -10,4 +10,4 @@ class EstadoFormas(Estado):
         controlador.update_fig(x, y)
 
     def soltar(self, controlador):
-        controlador.inclui_newfig()
+        controlador.incluir_newfig()
