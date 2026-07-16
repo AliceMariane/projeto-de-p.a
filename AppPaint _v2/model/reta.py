@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from .figura import Figura
+import math
 
 
 @dataclass
@@ -134,6 +135,30 @@ class Reta(Figura):
       self.ini_y += d_y
       self.fim_x += d_x
       self.fim_y += d_y
+
+  def contem_ponto(self, x, y, tolerancia=5):
+        px = self.x2 - self.x1
+        py = self.y2 - self.y1
+        somados_quadrados = px**2 + py**2
+        
+        if somados_quadrados == 0:
+            return math.sqrt((x - self.x1)**2 + (y - self.y1)**2) <= tolerancia
+
+        u = ((x - self.x1) * px + (y - self.y1) * py) / float(somados_quadrados)
+
+        if u > 1:
+            u = 1
+        elif u < 0:
+            u = 0
+
+        x_proximo = self.x1 + u * px
+        y_proximo = self.y1 + u * py
+
+        dx = x_proximo - x
+        dy = y_proximo - y
+
+        distancia = math.sqrt(dx**2 + dy**2)
+        return distancia <= tolerancia
   
   def contorno_selecao(self, x, y):
       x_min = min(self.ini_x, self.fim_x)
