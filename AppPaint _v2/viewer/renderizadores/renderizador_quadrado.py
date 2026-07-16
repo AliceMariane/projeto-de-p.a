@@ -30,3 +30,13 @@ class RenderizadorQuadrado(Renderizador):
       fill= quadrado.cor_preenchimento,
       dash= dash
     )
+
+  @staticmethod
+  def desenhar_selecao(canvas, quadrado):
+
+    canvas.create_rectangle(
+      *quadrado.pontos,
+      outline='black',
+      dash=(4, 4),
+      width=2
+    )
