@@ -158,6 +158,13 @@ class ControladorPrincipal:
         self._ultimo_x = x
         self._ultimo_y = y
 
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
+            )
+
     def mover_figura(self, x, y):
         '''
         Move a figura atualmente selecionada.
@@ -176,7 +183,9 @@ class ControladorPrincipal:
 
         if self._janela:
             self._janela.redesenhar(
-                self._model.get_figuras()
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
             )
 
     def finalizar_movimento(self):
@@ -185,7 +194,68 @@ class ControladorPrincipal:
         '''
 
         pass
-    
+
+    def desativar_selecao(self):
+
+        self._selecao.limpar()
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras()
+            )
+
+    def limpar_selecao(self):
+
+        self._selecao.limpar()
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras()
+            )
+
+    def selecionar_figuras_no_centro(self, pontos):
+
+        if not pontos or len(pontos) < 3:
+            return
+
+        poligono_selecao = pontos + [pontos[0]]
+        self._selecao.limpar()
+
+        figuras = list(self._model.get_figuras())
+        figuras.reverse()
+
+        for figura in figuras:
+            px, py = figura.centro if hasattr(figura, 'centro') else (figura.x, figura.y)
+
+            if self._ponto_em_poligono(px, py, poligono_selecao):
+                self._selecao.selecionar(figura)
+                break
+
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
+            )
+    @staticmethod
+    def pontos_no_poligono(x, y, poligono):
+        '''
+        Implementar algoritimo de cruzamento de raios para que os pontos estejao no poligono
+        '''
+        n = len(poligono)
+        dentro = False
+        p1x, p1y = poligono[0]
+
+        for i in range(n+1):
+            p2x, p2y = poligono[i % n]
+            if y > min(p1y, p2y):
+                if y <= max (p1y, p2y):
+                    if x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xinter = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        if p1x == p2x or x <= xinter:
+                            dentro = not dentro
+            p1x, p1y = p2x, p2y
+        return dentro
+
         # =====================================================
     # OPERAÇÕES SOBRE FIGURAS
     # =====================================================
@@ -238,6 +308,13 @@ class ControladorPrincipal:
                 self._model.get_figuras()
             )
 
+    def recortar(self):
+        '''
+        Copia a figura e depois apaga
+        '''
+        self.copiar()
+        self.apagar()
+
     def trazer_para_frente(self):
         '''
         Move a figura selecionada uma posição para frente.
@@ -253,7 +330,9 @@ class ControladorPrincipal:
 
         if self._janela:
             self._janela.redesenhar(
-                self._model.get_figuras()
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
             )
 
     def jogar_para_tras(self):
@@ -266,6 +345,8 @@ class ControladorPrincipal:
 
         self._ordenacao.tras(
             self._model.get_figuras(),
+            self._selecao.figura,
+            None,
             self._selecao.figura
         )
 
@@ -340,6 +421,7 @@ class ControladorPrincipal:
 
             # seleção de ferramenta
             "selecionar_forma": lambda: self.set_fig(valor),
+            "desativar_selecao": self.desativar_selecao,
 
             # desenho
             "inicio": lambda: self._estado.clicar(
@@ -360,6 +442,7 @@ class ControladorPrincipal:
             "copiar": self.copiar,
             "colar": self.colar,
             "apagar": self.apagar,
+            "recortar": self.recortar,
 
             # ordenação
             "frente": self.trazer_para_frente,
