@@ -35,15 +35,15 @@ class Figura(ABC):
         pass
 
     @abstractmethod
-    def contem_ponto(self, x, y):
-'''
-verifica se esta dentro a figura as coordenadas
-'''
+    def contorno_selecao(self, x, y):
+        '''Verifica se forma o contorno
+        '''
         pass
 
     @abstractmethod
-    def contorno_selecao(self, x, y):
-        '''Verifica se forma o contorno
+    def contem_ponto(self, x, y):
+        '''
+        verifica se esta dentro a figura as coordenadas
         '''
         pass
 
