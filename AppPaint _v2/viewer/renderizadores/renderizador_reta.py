@@ -28,3 +28,14 @@ class RenderizadorReta(Renderizador):
       fill= reta.cor_borda,
       dash= dash
     )
+
+
+  @staticmethod
+  def desenhar_selecao(canvas, reta):
+
+    canvas. create_line(
+      *reta.pontos,
+      fill='black', 
+      dash=(4, 4),
+      width=2
+    )
