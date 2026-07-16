@@ -165,7 +165,7 @@ class Janela:
 
     self.forma_atual = forma
     if getattr(self, 'modo_selecao', False):
-      self.alternar_selecao()
+      self.alterar_selecao()
 
     self.notificar_controller('selecionar_forma', forma)
 
