@@ -17,7 +17,7 @@ class RenderizadorMaoLivre(Renderizador):
       *figura.pontos,
       fill= figura.cor_borda,
       smooth= True,
-      width= 1
+      width=2
     )
 
   @staticmethod
@@ -30,5 +30,17 @@ class RenderizadorMaoLivre(Renderizador):
       *figura.pontos,
       fill= figura.cor_borda,
       smooth= True,
-      width= 1
+      width=2
+    )
+  @staticmethod
+  def desenhar_selecao(canvas, figuras):
+    '''
+    Contorno da mao livre
+    '''
+    canvas.create_line(
+      *figura.pontos,
+      fill='black',
+      dash=(4, 4),
+      smooth=True,
+      width=2
     )
