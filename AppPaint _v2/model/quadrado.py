@@ -152,7 +152,12 @@ class Quadrado(Figura):
       self.ini_y += d_y
       self.fim_x += d_x
       self.fim_y += d_y
-  
+    
+  def contem_ponto(self, x, y):
+    x_min, x_max = min(self.x1, self.x2), max(self.x1, self.x2)
+    y_min, y_max = min(self.y1, self.y2), max(self.y1, self.y2)
+    return x_min <= x <= x_max and y_min <= y <= y_max
+    
   def contorno_selecao(self, x, y):
       x_min = min(self.ini_x, self.fim_x)
       x_max = max(self.ini_x, self.fim_x)
