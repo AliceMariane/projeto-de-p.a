@@ -30,3 +30,13 @@ class RenderizadorElipse(Renderizador):
       fill= elipse.cor_preenchimento,
       dash= dash
     )
+
+  @staticmethod
+  def desenhar_selecao(canvas, elipse):
+
+    canvas.create_oval(
+      *elipse.pontos,
+      outline='black',
+      dash=(4, 4),
+      width=2
+    )
