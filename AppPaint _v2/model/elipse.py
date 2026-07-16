@@ -158,16 +158,16 @@ class Elipse(Figura):
     return x_min <= x <= x_max and y_min <= y <= y_max
     
     def contem_ponto(self, x, y):
-    #Pontos externos
-    x_min, x_max = min(self.x1, self.x2), max(self.x1, self.x2)
-    y_min, y_max = min(self.y1, self.y2), max(self.y1, self.y2)
-    # Centros
-    xc = (x_min + x_max)/2
-    yc = (y_min + y_max)/2
-    #Raios
-    a = (x_max - x_min)/2
-    b = (y_max - y_min)/2
+      #Pontos externos
+      x_min, x_max = min(self.x1, self.x2), max(self.x1, self.x2)
+      y_min, y_max = min(self.y1, self.y2), max(self.y1, self.y2)
+      # Centros
+      xc = (x_min + x_max)/2
+      yc = (y_min + y_max)/2
+      #Raios
+      a = (x_max - x_min)/2
+      b = (y_max - y_min)/2
 
-    if a == 0 or b == 0:
-        return False
-    return ((x - xc) **2) / (a**2) + ((y - yc)**2)/(b**2 <=1)
+      if a == 0 or b == 0:
+          return False
+      return ((x - xc) **2) / (a**2) + ((y - yc)**2)/(b**2 <=1)
