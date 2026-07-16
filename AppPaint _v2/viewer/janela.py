@@ -113,6 +113,7 @@ class Janela:
     self.menu_ferramentas()
     self.menu_cores()
     self.menu_visualizacao()
+    self.menu_camadas()
 
   
   def menu_formas(self):
@@ -151,26 +152,58 @@ class Janela:
         text=forma['nome'],
         nome_icone=forma['id'],
         command=lambda f=forma['id']:
-          self.notificar_controller('selecionar_forma', f)
+          self.clicar_forma(f)
       )
-
-      '''btao.grid(
-        row=row_idx,
-        column=col_idx,
-        padx=2,
-        pady=5
-      )'''
 
       col_idx += 1
 
       if col_idx > 1:
         col_idx = 0
         row_idx += 1
+
+  def clicar_forma(self, forma):
+
+    self.forma_atual = forma
+    if getattr(self, 'modo_selecao', False):
+      self.alternar_selecao()
+
+    self.notificar_controller('selecionar_forma', forma)
+
+  def alterar_selecao(self):
+
+    self.modo_selecao = not getattr(self, 'modo_selecao', False)
+    if self.modo_selecao:
+      self.btao_selecionar.config(
+        text='↖ SELEÇÃO: ON',
+        bg='#4CAF50',
+        fg='white',
+        relief=SUNKEN
+      )
+      self.notificar_controller('selecionar_forma', 'selecionar')
+    else:
+      self.btao_selecionar.config(
+        text='↖ SELEÇÃO: OFF',
+        bg='#3A3D41',
+        fg='red',
+        relief=RAISED
+      )
+      self.notificar_controller('desativar_selecao', None)
+      self.notificar_controller('selecionar_forma', getattr(self, 'forma_atual', 'reta'))
     
 
   def menu_ferramentas(self):
 
-   
+    self.btao_selecionar=Button(
+      self.f_menu,
+      text='↖ SELEÇÃO: OFF',
+      bg='#3A3D41',
+      fg='#FF6B6B',
+      font=('Arial', 9, 'bold'),
+      relief=RAISED,
+      command=self.alterar_selecao
+    )
+    self.btao_selecionar.pack(fill=X, padx=10, pady=(15, 5))
+
     Button(
       self.f_menu,
       text="Borracha",
@@ -253,9 +286,11 @@ class Janela:
 
     self.btao_cor_borda = Button(
       self.f_menu,
-      text='Cor da borda',
+      text='◯ Borda',
       bg='black',
       fg='white',
+      width= 2,
+      height= 3,
       relief=FLAT,
       command=lambda: self.abrir_paleta("borda")
     )
@@ -264,9 +299,11 @@ class Janela:
 
     self.btao_cor_preenchimento = Button(
       self.f_menu,
-      text='preenchimento',
+      text='◉ Preenchimento',
       bg='black',
       fg='white',
+      width= 2,
+      height= 3,
       relief=FLAT,
       command=lambda: self.abrir_paleta('preenchimento')
     )
@@ -285,6 +322,36 @@ class Janela:
       command=lambda:
         self.notificar_controller('limpar_tela', None)
     ).pack(side=BOTTOM, fill=X, padx=10, pady=20)
+
+  def menu_camadas(self):
+    Label(
+      self.f_menu,
+      text='▤ CAMADAS',
+      bg="#3A3A3A",
+      fg="white",
+      font=('Arial', 10, 'bold')
+      ).pack(pady=(20,8))
+
+    Button(
+      self.f_menu,
+      text="⏬ Trazer p/ Frente",
+      bg="#3A3D41",
+      fg='white',
+      relief=FLAT,
+      command=lambda:
+      self.notificar_controller('frente', None)
+      ).pack(fill=X, padx=10,pady=4)
+
+    Button(
+      self.f_menu,
+      text='⏫ Jogar p/ Tras',
+      bg="#3A3D41",
+      fg='white',
+      relief=FLAT,
+      command=lambda:
+      self.notificar_controller('tras', None)
+      ).pack(fill=X, padx=10, pady=4)
+    
 
  
   def iniciar_desenho(self, event):
@@ -305,7 +372,7 @@ class Janela:
     self.notificar_controller("fim",None)
 
 
-  def redesenhar(self, figuras_pronta, figura_atual=None):
+  def redesenhar(self, figuras_pronta, figura_atual=None, figura_selecionada=None):
     self.canvas.delete("all")  # limpa a tela
 
     if self._cores is None:
@@ -319,6 +386,10 @@ class Janela:
         figura,
         self._cores
       )
+     # Linha tracejada na selecao 
+      if figura_selecionada is not None and figura == figura_selecionada:
+        if hasattr(renderizador, 'desenhar_selecao'):
+          renderizador.desenhar_selecao(self.canvas, figura)
 
     # Desenhar preview da figura atual
     if figura_atual is not None:
@@ -328,6 +399,19 @@ class Janela:
         figura_atual,
         self._cores
       )
+
+  def desenhar_preview_laco(self, pontos):
+
+    if len (pontos) < 2:
+      return
+    self.canvas.create_line(
+      *pontos,
+      fill='lightblue',
+      dash=(4, 4),
+      smooth=True,
+      width=2,
+      tags='temporario_laco'
+    )
   
 
   def caminho_salvar_png(self):
@@ -370,6 +454,7 @@ class Janela:
           ("Retângulo", "retangulo"),
           ("Quadrado", "quadrado"),
           ("Elipse", "elipse"),
+          ("Selecionar", "selecionar")
       ]
 
       for nome, ident in formas:
@@ -397,6 +482,12 @@ class Janela:
   def menu_contexto(self, event):
 
     menu = Menu(self.root, tearoff=0)
+
+    menu.add_command(
+      label='Recortar',
+      command=lambda:
+      self.notificar_controller('recortar', None)
+    )
 
     menu.add_command(
         label="Copiar",
