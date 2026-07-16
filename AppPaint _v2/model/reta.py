@@ -128,3 +128,18 @@ class Reta(Figura):
       self.ini_x == self.fim_x and
       self.ini_y == self.fim_y
     )
+
+  def mover(self, d_x, d_y):
+      self.ini_x += d_x
+      self.ini_y += d_y
+      self.fim_x += d_x
+      self.fim_y += d_y
+  
+  def contorno_selecao(self, x, y):
+      x_min = min(self.ini_x, self.fim_x)
+      x_max = max(self.ini_x, self.fim_x)
+      y_min = min(self.ini_y, self.fim_y)
+      y_max = max(self.ini_y, self.fim_y)
+  
+      return x_min <= x <= x_max and y_min <= y <= y_max
+  
