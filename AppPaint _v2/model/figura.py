@@ -39,11 +39,8 @@ class Figura(ABC):
         '''Verifica se forma o contorno
         '''
         pass
-
+        
     @abstractmethod
     def contem_ponto(self, x, y):
-        '''
-        verifica se esta dentro a figura as coordenadas
-        '''
         pass
 
