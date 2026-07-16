@@ -117,8 +117,8 @@ class Circulo(Figura):
     return distancia <= self.raio
     
   def contem_ponto(self, x, y):
-    x_min, x_max = min(self.x1, self.x2), max(x1, self.x1, self.x2)
-    y_min, y_max = min(self.y1, self.y2), max(self.y1, self.y2)
+    x_min, x_max = min(self.ini_x, self.fim_x), max(x1, self.ini_x, self.fim_x)
+    y_min, y_max = min(self.ini_y, self.fim_y), max(self.ini_y, self.fim_y)
 
     xc = (x_min + x_max)/2
     yc = (y_min + y_max)/2
