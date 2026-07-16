@@ -26,4 +26,17 @@ class Figura(ABC):
         Verifica se a figura pode ser salva
         '''
         pass
-    
+
+    @abstractmethod
+    def mover(self, d_x, d_y):
+        '''
+        Mover a figura
+        '''
+        pass
+
+    @abstractmethod
+    def contorno_selecao(self, x, y):
+        '''Verifica se forma o contorno
+        '''
+        pass
+
