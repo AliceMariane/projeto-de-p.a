@@ -30,3 +30,17 @@ class RenderizadorCirculo(Renderizador):
       fill= circulo.cor_preenchimento,
       dash= dash
     )
+
+  @staticmethod
+  def desenhar_selecao(canvas, circulo):
+
+    '''
+    Contorno do circulo
+    '''
+    canvas.create_oval(
+      *circulo.limites,
+      outline='black',
+      dash=(4, 4),
+      width=2
+    )
+
