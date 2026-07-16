@@ -156,6 +156,7 @@ class Elipse(Figura):
     y_max = max(self.ini_y, self.fim_y)
 
     return x_min <= x <= x_max and y_min <= y <= y_max
+    
     def contem_ponto(self, x, y):
     #Pontos externos
     x_min, x_max = min(self.x1, self.x2), max(self.x1, self.x2)
