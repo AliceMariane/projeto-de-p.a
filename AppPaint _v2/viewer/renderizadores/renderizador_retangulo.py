@@ -30,3 +30,13 @@ class RenderizadorRetangulo(Renderizador):
       fill= retangulo.cor_preenchimento,
       dash= dash
     )
+
+  @staticmethod
+  def desenhar_selecao(canvas, retangulo):
+
+    canvas.create_rectangle(
+      *retangulo.pontos,
+      outline='black',
+      dash=(4, 4),
+      width=2
+    )
