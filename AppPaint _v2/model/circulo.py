@@ -105,3 +105,12 @@ class Circulo(Figura):
     '''
 
     return self.raio == 0
+  
+  def mover(self, d_x, d_y):
+    self._cx += d_x
+    self._cy += d_y
+
+  def contorno_selecao(self, x, y):
+
+    distancia = ((x-self.cx)**2 + (y-self.cy)**2)**0.5
+    return distancia <= self.raio
