@@ -121,7 +121,7 @@ class Circulo(Figura):
     y_min, y_max = min(self.y1, self.y2), max(self.y1, self.y2)
 
     xc = (x_min + x_max)/2
-    yc = (y_min = y_max)/2
+    yc = (y_min + y_max)/2
 
     raio = (x_max - x_min)/2
     distancia =math.sqrt((x-xc)**2+(y - yc) **2)
