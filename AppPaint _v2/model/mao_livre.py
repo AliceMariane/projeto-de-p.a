@@ -56,3 +56,19 @@ class MaoLivre(Figura):
     '''
 
     return len(self.pontos) < 2
+
+  def mover(self, d_x, d_y):
+
+    for i in range(0, len(sekf.pontos), 2):
+      self.pontos[i] += d_x
+      self.pontos[i+1] += d_y
+
+  def contorno_selecao(self, x, y):
+
+    for i in range(0, len(self.pontos), 2):
+      px = self.pontos[i]
+      py = self.pontos[i+1]
+      distancia = ((x - px)**2 + (y - py)**2)**0.5
+      if distancia <= 5:
+        return True
+    return False
