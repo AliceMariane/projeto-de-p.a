@@ -126,6 +126,15 @@ class Janela:
     self.root.bind_all(
         "<Control-v>",
         lambda event: self.notificar_controller("colar", None))
+
+     self.root.bind_all(
+        "<Up>",
+        lambda event: self.notificar_controller("frente", None))
+    
+    self.root.bind_all(
+        "<Down>",
+        lambda event: self.notificar_controller("tras", None))
+    
     
     # eventos de menu do botao direito do mouse
     self.canvas.bind("<Button-3>", self.menu_contexto)
