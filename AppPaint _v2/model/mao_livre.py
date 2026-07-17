@@ -72,3 +72,36 @@ class MaoLivre(Figura):
       if distancia <= 5:
         return True
     return False
+
+  def contem_ponto(self, x, y, tolerancia=5):
+    '''
+    Verifica se o ponto (x, y) está próximo
+    de algum segmento do rabisco.
+    '''
+
+    pontos = self.pontos
+
+    for i in range(0, len(pontos) - 2, 2):
+      x1, y1 = pontos[i], pontos[i + 1]
+      x2, y2 = pontos[i + 2], pontos[i + 3]
+
+      px = x2 - x1
+      py = y2 - y1
+      
+      somados_quadrados = px ** 2 + py ** 2
+      
+      if somados_quadrados == 0:
+        distancia = ((x - x1) ** 2 + (y - y1) ** 2) ** 0.5
+        if distancia <= tolerancia:
+          return True
+        continue
+
+      u = ((x - x1) * px + (y - y1) * py) / float(somados_quadrados)
+      u = max(0, min(1, u))
+
+      x_proximo = x1 + u * px
+      y_proximo = y1 + u * py
+
+      distancia = ((x - x_proximo) ** 2 + (y - y_proximo) ** 2) ** 0.5
+      if distancia <= tolerancia:
+        return True
