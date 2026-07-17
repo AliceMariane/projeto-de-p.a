@@ -323,14 +323,17 @@ class ControladorPrincipal:
         if not self._selecao.existe():
             return
 
+        figuras = self._model.get_figuras()
+        
         self._ordenacao.frente(
-            self._model.get_figuras(),
+            figuras ,
             self._selecao.figura
         )
+        self._model.set_figuras(figuras) #salva nova ordem das figuras no model
 
         if self._janela:
             self._janela.redesenhar(
-                self._model.get_figuras(),
+                figuras,
                 None,
                 self._selecao.figura
             )
@@ -342,18 +345,16 @@ class ControladorPrincipal:
 
         if not self._selecao.existe():
             return
-
+        figuras = self._model.get_figuras()
+        
         self._ordenacao.tras(
-            self._model.get_figuras(),
+            figuras ,
             self._selecao.figura,
-            None,
-            self._selecao.figura
         )
-
+        self._model.set_figuras(figuras) #salva nova ordem das figuras no model
+        
         if self._janela:
-            self._janela.redesenhar(
-                self._model.get_figuras()
-            )
+            self._janela.redesenhar(figuras)
 
     # =====================================================
     # ARQUIVOS
