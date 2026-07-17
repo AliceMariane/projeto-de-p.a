@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import colorchooser, filedialog
+from tkinter import messagebox
 
 from utils.cores import Cores
 from controller.criar_renderizadores import CriarRenderizadores
@@ -37,7 +38,19 @@ class Janela:
     # Construir layout
     self.barra_menu()
     self.layout()
-
+    
+  def sobre_projeto (self):
+    messagebox.showinfo(
+        "Sobre",
+        "paint v2\n\n"
+        "feito por: Rai Santos, Alice Mariane, Caique Souza.\n\n "
+        "Projeto desenvolvido como atividade acadêmica.\n\n"
+        "Curso de Ciência da Computação\n"
+        "Universidade Federal de Sergipe - UFS\n\n"
+        "Aplicação de desenho desenvolvida em Python com Tkinter.\n\n"
+        "Utiliza arquitetura MVC e State Pattern.\n"
+        
+    )
 
   # Metodos temporarios
   def mock_controller(self, acao, valor):
@@ -105,6 +118,15 @@ class Janela:
     self.canvas.bind("<B1-Motion>", self.atualizar_desenho)
     self.canvas.bind("<ButtonRelease-1>", self.finalizar_desenho)
 
+     # atalhos de teclado
+    self.root.bind_all(
+        "<Control-c>",
+        lambda event: self.notificar_controller("copiar", None))
+
+    self.root.bind_all(
+        "<Control-v>",
+        lambda event: self.notificar_controller("colar", None))
+    
     # eventos de menu do botao direito do mouse
     self.canvas.bind("<Button-3>", self.menu_contexto)
     
