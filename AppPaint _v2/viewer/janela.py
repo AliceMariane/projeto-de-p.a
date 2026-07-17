@@ -6,7 +6,7 @@ from tkinter import messagebox
 from utils.cores import Cores
 from controller.criar_renderizadores import CriarRenderizadores
 
-# import os
+# import osfrom tkinter import messagebox
 # from PIL import Image, ImageTk
 
 
@@ -513,7 +513,7 @@ class Janela:
       menu_sobre = Menu(barra_menu, tearoff=0)
       menu_sobre.add_command(
           label="Sobre",
-          command=lambda: print("teste")
+          command=lambda: self.sobre_projeto
       )
 
       barra_menu.add_cascade(label="Sobre", menu=menu_sobre)
