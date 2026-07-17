@@ -355,7 +355,41 @@ class ControladorPrincipal:
         
         if self._janela:
             self._janela.redesenhar(figuras)
+            
 
+    def mover_para_direita(self):
+        '''
+        Move a figura selecionada uma posição para direita.
+        '''
+
+        if not self._selecao.existe():
+            return
+        
+        self._selecao.figura.mover(25,0)
+        
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
+            )
+            
+    def mover_para_esquerda(self):
+        '''
+        Move a figura selecionada uma posição para esquerda.
+        '''
+
+        if not self._selecao.existe():
+            return
+        
+        self._selecao.figura.mover(-25,0)
+        
+        if self._janela:
+            self._janela.redesenhar(
+                self._model.get_figuras(),
+                None,
+                self._selecao.figura
+            )
     # =====================================================
     # ARQUIVOS
     # =====================================================
@@ -444,7 +478,9 @@ class ControladorPrincipal:
             "colar": self.colar,
             "apagar": self.apagar,
             "recortar": self.recortar,
-
+            "direita": self.mover_para_direita,
+            "esquerda": self.mover_para_esquerda,
+            
             # ordenação
             "frente": self.trazer_para_frente,
             "tras": self.jogar_para_tras,
