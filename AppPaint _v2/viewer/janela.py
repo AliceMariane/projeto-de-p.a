@@ -138,6 +138,14 @@ class Janela:
     self.root.bind_all(
         "<Delete>",
         lambda event: self.notificar_controller("apagar", None))
+
+    self.root.bind(
+        "<Right>",
+        lambda e: self.notificar_controller('direita', None))
+    
+    self.root.bind(
+        "<Left>",
+        lambda e: self.notificar_controller('esquerda', None))
     
     # eventos de menu do botao direito do mouse
     self.canvas.bind("<Button-3>", self.menu_contexto)
