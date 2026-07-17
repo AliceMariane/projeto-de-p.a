@@ -127,7 +127,7 @@ class Janela:
         "<Control-v>",
         lambda event: self.notificar_controller("colar", None))
 
-     self.root.bind_all(
+    self.root.bind_all(
         "<Up>",
         lambda event: self.notificar_controller("frente", None))
     
