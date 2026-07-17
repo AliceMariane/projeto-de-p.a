@@ -117,7 +117,7 @@ class Janela:
     self.canvas.bind("<Button-1>", self.iniciar_desenho)
     self.canvas.bind("<B1-Motion>", self.atualizar_desenho)
     self.canvas.bind("<ButtonRelease-1>", self.finalizar_desenho)
-
+    
      # atalhos de teclado
     self.root.bind_all(
         "<Control-c>",
@@ -135,6 +135,9 @@ class Janela:
         "<Down>",
         lambda event: self.notificar_controller("tras", None))
     
+    self.root.bind_all(
+        "<Delete>",
+        lambda event: self.notificar_controller("apagar", None))
     
     # eventos de menu do botao direito do mouse
     self.canvas.bind("<Button-3>", self.menu_contexto)
