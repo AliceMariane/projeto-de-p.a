@@ -33,7 +33,7 @@ class RenderizadorMaoLivre(Renderizador):
       width=2
     )
   @staticmethod
-  def desenhar_selecao(canvas, figuras):
+  def desenhar_selecao(canvas, figura):
     '''
     Contorno da mao livre
     '''
