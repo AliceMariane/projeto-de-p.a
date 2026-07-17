@@ -112,10 +112,11 @@ class Circulo(Figura):
     self._cy += d_y
 
   def contorno_selecao(self, x, y):
-
+    
     distancia = ((x-self.cx)**2 + (y-self.cy)**2)**0.5
     return distancia <= self.raio
     
-    def contem_ponto(self, x, y):
+  def contem_ponto(self, x, y):
+    
     distancia = math.sqrt((x - self.cx) ** 2 + (y - self.cy) ** 2)# o resultado é a raiz do que tá entre parenteses
     return distancia <= self.raio
