@@ -56,7 +56,7 @@ class Janela:
   def mock_controller(self, acao, valor):
     print(f'Controller acionado: {acao} -> {valor}')
 
-
+  
   def set_cores(self, cores: Cores):
     self._cores = cores
 
@@ -75,7 +75,7 @@ class Janela:
     cor = colorchooser.askcolor()[1]
 
     if cor:
-
+      
       self.notificar_controller('mudar_cor', (tipo, cor))
 
       if tipo == 'borda':
@@ -126,6 +126,10 @@ class Janela:
     self.root.bind_all(
         "<Control-v>",
         lambda event: self.notificar_controller("colar", None))
+    
+    self.root.bind_all(
+        "<Control-x>",
+        lambda event: self.notificar_controller("recortar", None))
 
     self.root.bind_all(
         "<Up>",
@@ -568,3 +572,4 @@ class Janela:
     # exibe o menu na tela na posição que o mouse clicou
     menu.tk_popup(event.x_root, event.y_root) # ao inves de funcionar apenas no canvas funciona em toda a tela do paint o comando
     
+#mudar_cor
